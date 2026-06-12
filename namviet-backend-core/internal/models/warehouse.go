@@ -16,6 +16,7 @@ type Warehouse struct {
 	Phone     *string    `json:"phone"`
 	Latitude  *float64   `json:"latitude"`
 	Longitude *float64   `json:"longitude"`
-	Status    string     `json:"status"`
-	CreatedAt *time.Time `json:"created_at"`
+	Status     string     `json:"status"`
+	OutletType *string    `json:"outlet_type"`
+	CreatedAt  *time.Time `json:"created_at"`
 }

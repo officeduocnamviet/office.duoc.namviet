@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
+	_ "github.com/lib/pq"
 )
 
 func main() {
-	dbURL := "postgresql://postgres.iudkexocalqdhxuyjacu:Longlong123%40a@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres"
-	db, err := sql.Open("pgx", dbURL)
+	dbURL := "postgresql://postgres.iudkexocalqdhxuyjacu:Longlong123%40a@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		panic(err)
 	}

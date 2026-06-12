@@ -1,29 +1,25 @@
 # Database Schema
 
-### Table: \_revert_double_deduct_20260417
-
-- **id**: bigint (Nullable: NO) DEFAULT nextval('\_revert_double_deduct_20260417_id_seq'::regclass)
+### Table: _revert_double_deduct_20260417
+- **id**: bigint (Nullable: NO) DEFAULT nextval('_revert_double_deduct_20260417_id_seq'::regclass)
 - **snapshot_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 - **action**: text (Nullable: NO)
 - **payload**: jsonb (Nullable: NO)
 
-### Table: \_revert_double_deduct_20260418
-
-- **id**: bigint (Nullable: NO) DEFAULT nextval('\_revert_double_deduct_20260418_id_seq'::regclass)
+### Table: _revert_double_deduct_20260418
+- **id**: bigint (Nullable: NO) DEFAULT nextval('_revert_double_deduct_20260418_id_seq'::regclass)
 - **snapshot_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 - **action**: text (Nullable: NO)
 - **payload**: jsonb (Nullable: NO)
 
-### Table: \_revert_double_deduct_20260423
-
-- **id**: bigint (Nullable: NO) DEFAULT nextval('\_revert_double_deduct_20260423_id_seq'::regclass)
+### Table: _revert_double_deduct_20260423
+- **id**: bigint (Nullable: NO) DEFAULT nextval('_revert_double_deduct_20260423_id_seq'::regclass)
 - **snapshot_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 - **action**: text (Nullable: NO)
 - **payload**: jsonb (Nullable: NO)
 
-### Table: \_stock_adjust_oversell_failures
-
-- **id**: bigint (Nullable: NO) DEFAULT nextval('\_stock_adjust_oversell_failures_id_seq'::regclass)
+### Table: _stock_adjust_oversell_failures
+- **id**: bigint (Nullable: NO) DEFAULT nextval('_stock_adjust_oversell_failures_id_seq'::regclass)
 - **order_code**: text (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
 - **uom**: text (Nullable: NO)
@@ -31,9 +27,8 @@
 - **error_message**: text (Nullable: YES)
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
-### Table: \_unit_normalize_skipped
-
-- **id**: bigint (Nullable: NO) DEFAULT nextval('\_unit_normalize_skipped_id_seq'::regclass)
+### Table: _unit_normalize_skipped
+- **id**: bigint (Nullable: NO) DEFAULT nextval('_unit_normalize_skipped_id_seq'::regclass)
 - **product_id**: bigint (Nullable: YES)
 - **variant**: text (Nullable: YES)
 - **canonical**: text (Nullable: YES)
@@ -43,8 +38,40 @@
 - **reason**: text (Nullable: YES)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
-### Table: appointments
+### Table: account_balances
+- **id**: bigint (Nullable: NO) DEFAULT nextval('account_balances_id_seq'::regclass)
+- **book**: text (Nullable: NO)
+- **account_id**: uuid (Nullable: NO)
+- **period_id**: bigint (Nullable: NO)
+- **opening_debit**: numeric (Nullable: NO) DEFAULT 0
+- **opening_credit**: numeric (Nullable: NO) DEFAULT 0
+- **period_debit**: numeric (Nullable: NO) DEFAULT 0
+- **period_credit**: numeric (Nullable: NO) DEFAULT 0
+- **closing_debit**: numeric (Nullable: NO) DEFAULT 0
+- **closing_credit**: numeric (Nullable: NO) DEFAULT 0
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
+### Table: accounting_periods
+- **id**: bigint (Nullable: NO) DEFAULT nextval('accounting_periods_id_seq'::regclass)
+- **book**: text (Nullable: NO)
+- **year**: integer (Nullable: NO)
+- **month**: integer (Nullable: NO)
+- **status**: text (Nullable: NO) DEFAULT 'open'::text
+- **opened_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **closed_at**: timestamp with time zone (Nullable: YES)
+
+### Table: active_ingredients
+- **id**: bigint (Nullable: NO)
+- **name**: text (Nullable: NO)
+- **name_intl**: text (Nullable: YES)
+- **slug**: text (Nullable: NO)
+- **atc_code**: text (Nullable: YES)
+- **description**: text (Nullable: YES)
+- **status**: text (Nullable: NO) DEFAULT 'active'::text
+- **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+
+### Table: appointments
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **customer_id**: bigint (Nullable: NO)
 - **doctor_id**: uuid (Nullable: YES)
@@ -63,7 +90,6 @@
 - **check_in_time**: timestamp with time zone (Nullable: YES)
 
 ### Table: asset_maintenance_history
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('asset_maintenance_history_id_seq'::regclass)
 - **asset_id**: bigint (Nullable: NO)
 - **maintenance_date**: date (Nullable: NO)
@@ -72,7 +98,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: asset_maintenance_plans
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('asset_maintenance_plans_id_seq'::regclass)
 - **asset_id**: bigint (Nullable: NO)
 - **content**: text (Nullable: NO)
@@ -85,14 +110,12 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: asset_types
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('asset_types_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **description**: text (Nullable: YES)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: assets
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('assets_id_seq'::regclass)
 - **asset_code**: text (Nullable: YES)
 - **name**: text (Nullable: NO)
@@ -112,7 +135,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: b2b_customer_debt_view
-
 - **customer_id**: bigint (Nullable: YES)
 - **customer_code**: text (Nullable: YES)
 - **customer_name**: text (Nullable: YES)
@@ -122,7 +144,6 @@
 - **actual_current_debt**: numeric (Nullable: YES)
 
 ### Table: b2b_notifications
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **customer_b2b_id**: bigint (Nullable: YES)
 - **type**: USER-DEFINED (Nullable: NO) DEFAULT 'system'::b2b_notification_type
@@ -134,7 +155,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: b2b_push_subscriptions
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **portal_user_id**: uuid (Nullable: NO)
 - **endpoint**: text (Nullable: NO)
@@ -144,7 +164,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: banks
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('banks_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **code**: text (Nullable: NO)
@@ -158,7 +177,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: batch_revaluations
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('batch_revaluations_id_seq'::regclass)
 - **batch_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -174,7 +192,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: batches
-
 - **id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: YES)
 - **batch_code**: text (Nullable: NO)
@@ -184,7 +201,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: categories
-
 - **id**: integer (Nullable: NO) DEFAULT nextval('categories_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **slug**: text (Nullable: NO)
@@ -196,7 +212,6 @@
 - **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: chart_of_accounts
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **account_code**: text (Nullable: NO)
 - **name**: text (Nullable: NO)
@@ -209,7 +224,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: chat_cache
-
 - **cache_key**: text (Nullable: NO)
 - **response**: jsonb (Nullable: NO)
 - **hits**: integer (Nullable: NO) DEFAULT 0
@@ -217,7 +231,6 @@
 - **expires_at**: timestamp with time zone (Nullable: NO)
 
 ### Table: chat_compliance_audits
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **message_id**: uuid (Nullable: NO)
 - **session_id**: uuid (Nullable: NO)
@@ -232,7 +245,6 @@
 - **audited_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: chat_feedback
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **message_id**: uuid (Nullable: NO)
 - **reporter_id**: uuid (Nullable: NO)
@@ -241,7 +253,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: chat_feedback_weekly_clusters
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('chat_feedback_weekly_clusters_id_seq'::regclass)
 - **week_start**: date (Nullable: NO)
 - **pattern_keyword**: text (Nullable: NO)
@@ -250,7 +261,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: chat_handoffs
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **session_id**: uuid (Nullable: NO)
 - **reason**: text (Nullable: NO)
@@ -258,7 +268,6 @@
 - **resolved_at**: timestamp with time zone (Nullable: YES)
 
 ### Table: chat_messages
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **session_id**: uuid (Nullable: NO)
 - **role**: text (Nullable: NO)
@@ -272,7 +281,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: chat_sessions
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **user_id**: uuid (Nullable: NO)
 - **status**: text (Nullable: NO) DEFAULT 'bot'::text
@@ -285,7 +293,6 @@
 - **closed_at**: timestamp with time zone (Nullable: YES)
 
 ### Table: clinical_prescription_items
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **prescription_id**: uuid (Nullable: YES)
 - **product_id**: bigint (Nullable: YES)
@@ -295,7 +302,6 @@
 - **unit_price_snapshot**: numeric (Nullable: YES) DEFAULT 0
 
 ### Table: clinical_prescriptions
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **visit_id**: uuid (Nullable: YES)
 - **customer_id**: bigint (Nullable: YES)
@@ -306,7 +312,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: clinical_queues
-
 - **id**: bigint (Nullable: NO)
 - **appointment_id**: uuid (Nullable: YES)
 - **customer_id**: bigint (Nullable: NO)
@@ -319,7 +324,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: clinical_service_requests
-
 - **id**: bigint (Nullable: NO)
 - **medical_visit_id**: uuid (Nullable: YES)
 - **patient_id**: bigint (Nullable: YES)
@@ -335,8 +339,25 @@
 - **created_by**: uuid (Nullable: YES)
 - **payment_order_id**: uuid (Nullable: YES)
 
-### Table: connect_comments
+### Table: companies
+- **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
+- **tax_code**: text (Nullable: NO)
+- **name**: text (Nullable: NO)
+- **short_name**: text (Nullable: YES)
+- **address**: text (Nullable: NO)
+- **phone**: text (Nullable: NO)
+- **email**: text (Nullable: NO)
+- **logo_url**: text (Nullable: YES)
+- **representative_name**: text (Nullable: NO)
+- **business_license_url**: ARRAY (Nullable: YES)
+- **mission**: text (Nullable: YES)
+- **vision**: text (Nullable: YES)
+- **status**: text (Nullable: YES) DEFAULT 'active'::text
+- **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
+- **deleted_at**: timestamp with time zone (Nullable: YES)
 
+### Table: connect_comments
 - **id**: bigint (Nullable: NO) DEFAULT nextval('connect_comments_id_seq'::regclass)
 - **post_id**: bigint (Nullable: NO)
 - **user_id**: uuid (Nullable: NO) DEFAULT auth.uid()
@@ -345,14 +366,12 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: connect_likes
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('connect_likes_id_seq'::regclass)
 - **post_id**: bigint (Nullable: NO)
 - **user_id**: uuid (Nullable: NO) DEFAULT auth.uid()
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: connect_posts
-
 - **id**: bigint (Nullable: NO)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **creator_id**: uuid (Nullable: YES) DEFAULT auth.uid()
@@ -375,13 +394,11 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: connect_reads
-
 - **post_id**: bigint (Nullable: NO)
 - **user_id**: uuid (Nullable: NO) DEFAULT auth.uid()
 - **confirmed_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: customer_b2b_contacts
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('customer_b2b_contacts_id_seq'::regclass)
 - **customer_b2b_id**: bigint (Nullable: NO)
 - **name**: text (Nullable: NO)
@@ -392,28 +409,24 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: customer_favorites
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **customer_b2b_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: customer_guardians
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('customer_guardians_id_seq'::regclass)
 - **customer_id**: bigint (Nullable: NO)
 - **guardian_id**: bigint (Nullable: NO)
 - **relationship**: text (Nullable: YES)
 
 ### Table: customer_segment_members
-
 - **id**: bigint (Nullable: NO)
 - **segment_id**: bigint (Nullable: NO)
 - **customer_id**: bigint (Nullable: NO)
 - **added_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: customer_segments
-
 - **id**: bigint (Nullable: NO)
 - **name**: text (Nullable: NO)
 - **description**: text (Nullable: YES)
@@ -424,7 +437,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: customer_service_wallets
-
 - **id**: bigint (Nullable: NO)
 - **customer_id**: bigint (Nullable: NO)
 - **order_id**: uuid (Nullable: YES)
@@ -438,7 +450,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: customer_vaccination_records
-
 - **id**: bigint (Nullable: NO)
 - **customer_id**: bigint (Nullable: NO)
 - **order_id**: uuid (Nullable: YES)
@@ -457,7 +468,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: customer_vouchers
-
 - **id**: bigint (Nullable: NO)
 - **customer_id**: bigint (Nullable: NO)
 - **promotion_id**: uuid (Nullable: NO)
@@ -468,7 +478,6 @@
 - **usage_remaining**: integer (Nullable: YES) DEFAULT 1
 
 ### Table: customers
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('customers_id_seq'::regclass)
 - **customer_code**: text (Nullable: YES)
 - **name**: text (Nullable: NO)
@@ -496,9 +505,9 @@
 - **contact_person_phone**: text (Nullable: YES)
 - **last_purchase_at**: timestamp with time zone (Nullable: YES)
 - **updated_by**: uuid (Nullable: YES)
+- **customer_type**: character varying (Nullable: YES) DEFAULT 'B2C'::character varying
 
 ### Table: customers_b2b
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('customers_b2b_id_seq'::regclass)
 - **customer_code**: text (Nullable: YES)
 - **name**: text (Nullable: NO)
@@ -524,9 +533,10 @@
 - **loyalty_points**: integer (Nullable: YES) DEFAULT 0
 - **current_debt**: numeric (Nullable: YES) DEFAULT 0
 - **current_debt_bak**: numeric (Nullable: YES)
+- **sales_permissions**: jsonb (Nullable: YES) DEFAULT '{}'::jsonb
+- **customer_type**: character varying (Nullable: YES) DEFAULT 'B2B'::character varying
 
 ### Table: deal_items
-
 - **id**: integer (Nullable: NO) DEFAULT nextval('deal_items_id_seq'::regclass)
 - **deal_id**: integer (Nullable: NO)
 - **product_id**: integer (Nullable: NO)
@@ -535,7 +545,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: delivery_routes
-
 - **id**: bigint (Nullable: NO)
 - **day_of_week**: smallint (Nullable: NO)
 - **route_name**: text (Nullable: NO)
@@ -544,7 +553,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: delivery_schedule_overrides
-
 - **id**: bigint (Nullable: NO)
 - **override_date**: date (Nullable: NO)
 - **route_name**: text (Nullable: YES)
@@ -553,7 +561,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: document_templates
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('document_templates_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **module**: USER-DEFINED (Nullable: NO)
@@ -563,8 +570,17 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
-### Table: finance_invoice_allocations
+### Table: dosage_forms
+- **id**: integer (Nullable: NO)
+- **name**: text (Nullable: NO)
+- **slug**: text (Nullable: NO)
+- **is_complex**: boolean (Nullable: NO) DEFAULT false
+- **sort_order**: integer (Nullable: NO) DEFAULT 0
+- **status**: text (Nullable: NO) DEFAULT 'active'::text
+- **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
+### Table: finance_invoice_allocations
 - **id**: bigint (Nullable: NO)
 - **invoice_id**: bigint (Nullable: YES)
 - **po_id**: bigint (Nullable: YES)
@@ -572,8 +588,26 @@
 - **note**: text (Nullable: YES)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
-### Table: finance_invoices
+### Table: finance_invoice_items
+- **id**: bigint (Nullable: NO) DEFAULT nextval('finance_invoice_items_id_seq'::regclass)
+- **invoice_id**: bigint (Nullable: NO)
+- **product_id**: bigint (Nullable: YES)
+- **product_unit_id**: bigint (Nullable: YES)
+- **vendor_product_name**: text (Nullable: YES)
+- **vendor_unit**: text (Nullable: YES)
+- **supplier_sku**: text (Nullable: YES)
+- **quantity**: numeric (Nullable: YES) DEFAULT 0
+- **pre_vat_price**: numeric (Nullable: YES) DEFAULT 0
+- **discount_percentage**: numeric (Nullable: YES) DEFAULT 0
+- **discount_amount**: numeric (Nullable: YES) DEFAULT 0
+- **vat_rate**: numeric (Nullable: YES) DEFAULT 0
+- **vat_amount**: numeric (Nullable: YES) DEFAULT 0
+- **total_amount_pre_vat**: numeric (Nullable: YES) DEFAULT 0
+- **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
+- **quantity_buyer**: numeric (Nullable: YES)
 
+### Table: finance_invoices
 - **id**: bigint (Nullable: NO)
 - **invoice_number**: text (Nullable: YES)
 - **invoice_symbol**: text (Nullable: YES)
@@ -596,9 +630,25 @@
 - **direction**: text (Nullable: YES) DEFAULT 'inbound'::text
 - **buyer_tax_code**: text (Nullable: YES)
 - **raw_items**: jsonb (Nullable: YES)
+- **total_price_excludes_vat**: numeric (Nullable: YES) DEFAULT 0
+- **total_trade_discount**: numeric (Nullable: YES) DEFAULT 0
+- **total_fee_amount**: numeric (Nullable: YES) DEFAULT 0
+- **total_goods_amount**: numeric (Nullable: NO) DEFAULT 0
+- **total_discount_amount**: numeric (Nullable: NO) DEFAULT 0
+- **payment_status**: text (Nullable: NO) DEFAULT 'UNPAID'::text
+- **paid_amount**: numeric (Nullable: NO) DEFAULT 0
+- **order_id**: uuid (Nullable: YES)
+- **accounting_status**: text (Nullable: YES) DEFAULT 'pending'::text
+- **buyer_name**: text (Nullable: YES)
+- **buyer_company_name**: text (Nullable: YES)
+- **buyer_address**: text (Nullable: YES)
+- **buyer_email**: text (Nullable: YES)
+- **customer_id**: bigint (Nullable: YES)
+- **customer_b2c_id**: bigint (Nullable: YES)
+- **payment_method**: text (Nullable: YES)
+- **purchase_order_id**: bigint (Nullable: YES)
 
 ### Table: finance_transactions
-
 - **id**: bigint (Nullable: NO)
 - **code**: text (Nullable: NO)
 - **transaction_date**: timestamp with time zone (Nullable: NO) DEFAULT now()
@@ -622,9 +672,10 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **target_bank_info**: jsonb (Nullable: YES)
 - **bank_reference_id**: text (Nullable: YES)
+- **book_type**: text (Nullable: NO) DEFAULT 'BOTH'::text
+- **is_posted**: boolean (Nullable: NO) DEFAULT false
 
 ### Table: fund_accounts
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('fund_accounts_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **type**: USER-DEFINED (Nullable: NO)
@@ -639,9 +690,9 @@
 - **balance**: numeric (Nullable: NO) DEFAULT 0
 - **bank_info**: jsonb (Nullable: YES)
 - **description**: text (Nullable: YES)
+- **account_id**: text (Nullable: YES)
 
 ### Table: inventory_batches
-
 - **id**: bigint (Nullable: NO)
 - **warehouse_id**: bigint (Nullable: YES)
 - **product_id**: bigint (Nullable: YES)
@@ -650,7 +701,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: inventory_check_items
-
 - **id**: bigint (Nullable: NO)
 - **check_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -669,7 +719,6 @@
 - **diff_quantity**: numeric (Nullable: YES)
 
 ### Table: inventory_checks
-
 - **id**: bigint (Nullable: NO)
 - **code**: text (Nullable: NO)
 - **warehouse_id**: bigint (Nullable: NO)
@@ -685,7 +734,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: inventory_receipt_items
-
 - **id**: bigint (Nullable: NO)
 - **receipt_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -703,7 +751,6 @@
 - **final_unit_cost**: numeric (Nullable: YES) DEFAULT 0
 
 ### Table: inventory_receipts
-
 - **id**: bigint (Nullable: NO)
 - **code**: text (Nullable: NO)
 - **po_id**: bigint (Nullable: YES)
@@ -721,7 +768,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: inventory_transactions
-
 - **id**: bigint (Nullable: NO)
 - **warehouse_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -739,7 +785,6 @@
 - **total_value**: numeric (Nullable: YES)
 
 ### Table: inventory_transfer_batch_items
-
 - **id**: bigint (Nullable: NO)
 - **transfer_item_id**: bigint (Nullable: NO)
 - **batch_id**: bigint (Nullable: NO)
@@ -747,7 +792,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: inventory_transfer_items
-
 - **id**: bigint (Nullable: NO)
 - **transfer_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -760,7 +804,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: inventory_transfers
-
 - **id**: bigint (Nullable: NO)
 - **code**: text (Nullable: NO)
 - **source_warehouse_id**: bigint (Nullable: NO)
@@ -781,8 +824,34 @@
 - **received_by**: uuid (Nullable: YES)
 - **received_at**: timestamp with time zone (Nullable: YES)
 
-### Table: lab_indicators_config
+### Table: journal_entries
+- **id**: bigint (Nullable: NO) DEFAULT nextval('journal_entries_id_seq'::regclass)
+- **book**: text (Nullable: NO)
+- **entry_date**: date (Nullable: NO)
+- **period_id**: bigint (Nullable: NO)
+- **doc_type**: text (Nullable: NO)
+- **source_ref_type**: text (Nullable: YES)
+- **source_ref_id**: text (Nullable: YES)
+- **description**: text (Nullable: YES)
+- **status**: text (Nullable: NO) DEFAULT 'draft'::text
+- **total_debit**: numeric (Nullable: NO) DEFAULT 0
+- **total_credit**: numeric (Nullable: NO) DEFAULT 0
+- **created_by**: uuid (Nullable: YES)
+- **posted_by**: uuid (Nullable: YES)
+- **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **posted_at**: timestamp with time zone (Nullable: YES)
 
+### Table: journal_entry_lines
+- **id**: bigint (Nullable: NO) DEFAULT nextval('journal_entry_lines_id_seq'::regclass)
+- **entry_id**: bigint (Nullable: NO)
+- **account_id**: uuid (Nullable: NO)
+- **debit**: numeric (Nullable: NO) DEFAULT 0
+- **credit**: numeric (Nullable: NO) DEFAULT 0
+- **partner_id**: text (Nullable: YES)
+- **description**: text (Nullable: YES)
+- **line_no**: integer (Nullable: NO) DEFAULT 1
+
+### Table: lab_indicators_config
 - **id**: bigint (Nullable: NO)
 - **service_package_id**: bigint (Nullable: YES)
 - **indicator_code**: text (Nullable: NO)
@@ -803,7 +872,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: llm_request_log
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('llm_request_log_id_seq'::regclass)
 - **session_id**: uuid (Nullable: YES)
 - **user_id**: uuid (Nullable: YES)
@@ -818,7 +886,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: manufacturers
-
 - **id**: integer (Nullable: NO) DEFAULT nextval('manufacturers_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **slug**: text (Nullable: NO)
@@ -829,7 +896,6 @@
 - **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: medical_visits
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **appointment_id**: uuid (Nullable: YES)
 - **customer_id**: bigint (Nullable: YES)
@@ -873,7 +939,6 @@
 - **vac_screening**: jsonb (Nullable: YES) DEFAULT '{}'::jsonb
 
 ### Table: notifications
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **user_id**: uuid (Nullable: NO)
 - **title**: text (Nullable: NO)
@@ -886,7 +951,6 @@
 - **metadata**: jsonb (Nullable: YES) DEFAULT '{}'::jsonb
 
 ### Table: order_items
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **order_id**: uuid (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -906,7 +970,6 @@
 - **quantity_returned**: integer (Nullable: YES) DEFAULT 0
 
 ### Table: order_status_history
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('order_status_history_id_seq'::regclass)
 - **order_id**: uuid (Nullable: NO)
 - **old_status**: text (Nullable: YES)
@@ -916,7 +979,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: orders
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **code**: text (Nullable: NO)
 - **customer_id**: bigint (Nullable: YES)
@@ -954,7 +1016,6 @@
 - **source**: text (Nullable: YES) DEFAULT 'erp'::text
 
 ### Table: paraclinical_templates
-
 - **id**: bigint (Nullable: NO)
 - **service_package_id**: bigint (Nullable: YES)
 - **name**: text (Nullable: NO)
@@ -968,13 +1029,11 @@
 - **created_by**: uuid (Nullable: YES)
 
 ### Table: permissions
-
 - **key**: text (Nullable: NO)
 - **name**: text (Nullable: NO)
 - **module**: text (Nullable: NO)
 
 ### Table: portal_cart_items
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **portal_user_id**: uuid (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -986,7 +1045,6 @@
 - **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: portal_users
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **auth_user_id**: uuid (Nullable: NO)
 - **customer_b2b_id**: bigint (Nullable: NO)
@@ -1000,7 +1058,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: prescription_template_items
-
 - **id**: bigint (Nullable: NO)
 - **template_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -1009,7 +1066,6 @@
 - **product_unit_id**: bigint (Nullable: YES)
 
 ### Table: prescription_templates
-
 - **id**: bigint (Nullable: NO)
 - **name**: text (Nullable: NO)
 - **diagnosis**: text (Nullable: YES)
@@ -1019,8 +1075,18 @@
 - **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 - **doctor_id**: uuid (Nullable: YES)
 
-### Table: product_activity_logs
+### Table: product_active_ingredients
+- **id**: bigint (Nullable: NO)
+- **product_id**: bigint (Nullable: NO)
+- **active_ingredient_id**: bigint (Nullable: NO)
+- **strength_value**: numeric (Nullable: YES)
+- **strength_unit**: text (Nullable: YES)
+- **is_primary**: boolean (Nullable: NO) DEFAULT false
+- **sort_order**: integer (Nullable: NO) DEFAULT 0
+- **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
+### Table: product_activity_logs
 - **id**: bigint (Nullable: NO)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **user_id**: uuid (Nullable: YES)
@@ -1031,7 +1097,6 @@
 - **note**: text (Nullable: YES)
 
 ### Table: product_contents
-
 - **id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: YES)
 - **channel**: text (Nullable: NO)
@@ -1047,7 +1112,6 @@
 - **updated_by**: uuid (Nullable: YES)
 
 ### Table: product_deals
-
 - **id**: integer (Nullable: NO) DEFAULT nextval('product_deals_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **slug**: text (Nullable: NO)
@@ -1060,8 +1124,13 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 - **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
-### Table: product_inventory
+### Table: product_embeddings
+- **product_id**: integer (Nullable: NO)
+- **content**: text (Nullable: NO)
+- **embedding**: USER-DEFINED (Nullable: NO)
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
+### Table: product_inventory
 - **id**: bigint (Nullable: NO) DEFAULT nextval('product_inventory_id_seq'::regclass)
 - **product_id**: bigint (Nullable: NO)
 - **warehouse_id**: bigint (Nullable: NO)
@@ -1075,8 +1144,27 @@
 - **location_slot**: text (Nullable: YES)
 - **updated_by**: uuid (Nullable: YES)
 
-### Table: product_synonyms
+### Table: product_monthly_sales_view
+- **product_id**: bigint (Nullable: YES)
+- **monthly_sales_qty**: bigint (Nullable: YES)
+- **formatted_monthly_sales_qty**: text (Nullable: YES)
 
+### Table: product_regulatory
+- **product_id**: bigint (Nullable: NO)
+- **item_type**: text (Nullable: NO) DEFAULT 'drug'::text
+- **prescription_class**: text (Nullable: YES)
+- **special_control_type**: text (Nullable: NO) DEFAULT 'none'::text
+- **is_essential**: boolean (Nullable: NO) DEFAULT false
+- **is_restricted_retail**: boolean (Nullable: NO) DEFAULT false
+- **is_vaccine**: boolean (Nullable: NO) DEFAULT false
+- **dosage_form_id**: integer (Nullable: YES)
+- **route_id**: integer (Nullable: YES)
+- **classified_by**: uuid (Nullable: YES)
+- **classified_at**: timestamp with time zone (Nullable: YES)
+- **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+
+### Table: product_synonyms
 - **id**: bigint (Nullable: NO) DEFAULT nextval('product_synonyms_id_seq'::regclass)
 - **product_id**: bigint (Nullable: NO)
 - **synonym**: text (Nullable: NO)
@@ -1084,7 +1172,6 @@
 - **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: product_units
-
 - **id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: YES)
 - **unit_name**: text (Nullable: NO)
@@ -1100,7 +1187,6 @@
 - **price**: numeric (Nullable: YES) DEFAULT 0
 
 ### Table: products
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('products_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **sku**: text (Nullable: YES)
@@ -1113,12 +1199,12 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **category_name**: text (Nullable: YES)
-- **manufacturer_name**: text (Nullable: YES) -- cần xây dựng bảng này.
-- **distributor_id**: bigint (Nullable: YES) -- chính là bảng supplier, FK đến bảng manufacturer để có thể hiển thị 1 sản phẩm có nhiều nhà cung cấp.
-- **invoice_price**: numeric (Nullable: YES) DEFAULT 0 -- Không dùng cột này, giá trị VAT của sản phẩm dùng "vat_rate" trên bảng "vat_inventory_ledger"
-- **actual_cost**: numeric (Nullable: NO) DEFAULT 0 -- Không dùng cột này
-- **wholesale_unit**: text (Nullable: YES) DEFAULT 'Hộp'::text -- Không dùng cột này
-- **retail_unit**: text (Nullable: YES) DEFAULT 'Vỉ'::text -- Không dùng cột này
+- **manufacturer_name**: text (Nullable: YES)
+- **distributor_id**: bigint (Nullable: YES)
+- **invoice_price**: numeric (Nullable: YES) DEFAULT 0
+- **actual_cost**: numeric (Nullable: NO) DEFAULT 0
+- **wholesale_unit**: text (Nullable: YES) DEFAULT 'Hộp'::text
+- **retail_unit**: text (Nullable: YES) DEFAULT 'Vỉ'::text
 - **conversion_factor**: integer (Nullable: YES) DEFAULT 1
 - **wholesale_margin_value**: numeric (Nullable: YES) DEFAULT 0
 - **wholesale_margin_type**: text (Nullable: YES) DEFAULT '%'::text
@@ -1138,9 +1224,9 @@
 - **category_id**: integer (Nullable: YES)
 - **manufacturer_id**: integer (Nullable: YES)
 - **stock_status**: text (Nullable: YES) DEFAULT 'in_stock'::text
+- **product_images**: ARRAY (Nullable: YES) DEFAULT '{}'::text[]
 
 ### Table: promotion_gifts
-
 - **id**: bigint (Nullable: NO)
 - **name**: text (Nullable: NO)
 - **type**: USER-DEFINED (Nullable: NO)
@@ -1158,7 +1244,6 @@
 - **supplier_id**: bigint (Nullable: YES)
 
 ### Table: promotion_targets
-
 - **id**: bigint (Nullable: NO)
 - **promotion_id**: uuid (Nullable: NO)
 - **target_type**: text (Nullable: NO)
@@ -1166,7 +1251,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: promotion_usages
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **promotion_id**: uuid (Nullable: NO)
 - **customer_id**: bigint (Nullable: NO)
@@ -1175,7 +1259,6 @@
 - **discount_amount**: numeric (Nullable: NO) DEFAULT 0
 
 ### Table: promotions
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **code**: text (Nullable: NO)
 - **name**: text (Nullable: NO)
@@ -1198,7 +1281,6 @@
 - **customer_type**: text (Nullable: YES) DEFAULT 'B2C'::text
 
 ### Table: purchase_order_items
-
 - **id**: bigint (Nullable: NO)
 - **po_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -1218,7 +1300,6 @@
 - **final_unit_cost**: numeric (Nullable: YES) DEFAULT 0
 
 ### Table: purchase_orders
-
 - **id**: bigint (Nullable: NO)
 - **code**: text (Nullable: NO)
 - **supplier_id**: bigint (Nullable: NO)
@@ -1246,7 +1327,6 @@
 - **costing_confirmed_at**: timestamp with time zone (Nullable: YES)
 
 ### Table: registration_requests
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **business_name**: text (Nullable: NO)
 - **tax_code**: text (Nullable: YES)
@@ -1268,19 +1348,26 @@
 - **auth_user_id**: uuid (Nullable: YES)
 
 ### Table: role_permissions
-
 - **role_id**: uuid (Nullable: NO)
 - **permission_key**: text (Nullable: NO)
 
 ### Table: roles
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **name**: text (Nullable: NO)
 - **description**: text (Nullable: YES)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
-### Table: rpc_access_rules
+### Table: routes_of_administration
+- **id**: integer (Nullable: NO)
+- **name**: text (Nullable: NO)
+- **slug**: text (Nullable: NO)
+- **is_complex**: boolean (Nullable: NO) DEFAULT false
+- **sort_order**: integer (Nullable: NO) DEFAULT 0
+- **status**: text (Nullable: NO) DEFAULT 'active'::text
+- **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
+### Table: rpc_access_rules
 - **function_name**: text (Nullable: NO)
 - **required_permission**: text (Nullable: YES)
 - **max_calls_per_minute**: integer (Nullable: YES) DEFAULT 60
@@ -1288,14 +1375,12 @@
 - **description**: text (Nullable: YES)
 
 ### Table: rpc_rate_log
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('rpc_rate_log_id_seq'::regclass)
 - **user_id**: uuid (Nullable: NO)
 - **function_name**: text (Nullable: NO)
 - **called_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: sales_invoices
-
 - **id**: bigint (Nullable: NO)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
@@ -1319,9 +1404,17 @@
 - **note**: text (Nullable: YES)
 - **status**: text (Nullable: NO) DEFAULT 'pending'::text
 - **tracking_code**: text (Nullable: YES)
+- **items_json**: jsonb (Nullable: YES)
+- **parsed_data**: jsonb (Nullable: YES)
+- **file_url**: text (Nullable: YES)
+- **file_type**: text (Nullable: YES)
+- **direction**: text (Nullable: YES) DEFAULT 'outbound'::text
+- **supplier_tax_code**: text (Nullable: YES)
+- **accounting_status**: text (Nullable: YES) DEFAULT 'pending'::text
+- **payment_status**: text (Nullable: YES) DEFAULT 'UNPAID'::text
+- **paid_amount**: numeric (Nullable: YES) DEFAULT 0
 
 ### Table: sales_return_items
-
 - **id**: bigint (Nullable: NO)
 - **return_id**: uuid (Nullable: YES)
 - **order_item_id**: uuid (Nullable: YES)
@@ -1332,7 +1425,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: sales_returns
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **code**: text (Nullable: NO)
 - **order_id**: uuid (Nullable: YES)
@@ -1345,8 +1437,19 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
-### Table: service_consumables
+### Table: selling_rules
+- **id**: integer (Nullable: NO)
+- **outlet_type**: text (Nullable: NO)
+- **rule_key**: text (Nullable: NO)
+- **is_allowed**: boolean (Nullable: NO)
+- **allowed_if_essential**: boolean (Nullable: NO) DEFAULT false
+- **requires_prescription**: boolean (Nullable: NO) DEFAULT false
+- **requires_special_license**: boolean (Nullable: NO) DEFAULT false
+- **note**: text (Nullable: YES)
+- **created_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
+- **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
+### Table: service_consumables
 - **id**: bigint (Nullable: NO)
 - **service_product_id**: bigint (Nullable: YES)
 - **consumable_product_id**: bigint (Nullable: YES)
@@ -1354,7 +1457,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: service_package_items
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('service_package_items_id_seq'::regclass)
 - **package_id**: bigint (Nullable: NO)
 - **item_id**: bigint (Nullable: NO)
@@ -1363,7 +1465,6 @@
 - **schedule_days**: integer (Nullable: YES) DEFAULT 0
 
 ### Table: service_packages
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('service_packages_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **sku**: text (Nullable: NO)
@@ -1383,7 +1484,6 @@
 - **clinical_category**: text (Nullable: YES) DEFAULT 'none'::text
 
 ### Table: shipping_addresses
-
 - **id**: bigint (Nullable: NO)
 - **customer_b2b_id**: bigint (Nullable: NO)
 - **label**: text (Nullable: YES)
@@ -1397,7 +1497,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: shipping_fee_config
-
 - **id**: bigint (Nullable: NO)
 - **delivery_method**: text (Nullable: NO)
 - **flat_fee**: numeric (Nullable: NO) DEFAULT 0
@@ -1408,7 +1507,6 @@
 - **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: shipping_partners
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('shipping_partners_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **type**: USER-DEFINED (Nullable: NO) DEFAULT 'app'::shipping_partner_type
@@ -1423,15 +1521,19 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: shipping_rules
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('shipping_rules_id_seq'::regclass)
 - **partner_id**: bigint (Nullable: NO)
 - **zone_name**: text (Nullable: NO)
 - **speed_hours**: integer (Nullable: YES)
 - **fee**: numeric (Nullable: YES) DEFAULT 0
 
-### Table: supplier_program_groups
+### Table: supplier_debt_view
+- **supplier_id**: bigint (Nullable: YES)
+- **total_invoiced**: numeric (Nullable: YES)
+- **total_paid**: numeric (Nullable: YES)
+- **current_debt**: numeric (Nullable: YES)
 
+### Table: supplier_program_groups
 - **id**: bigint (Nullable: NO)
 - **program_id**: bigint (Nullable: YES)
 - **name**: text (Nullable: NO)
@@ -1442,13 +1544,11 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: supplier_program_products
-
 - **group_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: supplier_programs
-
 - **id**: bigint (Nullable: NO)
 - **supplier_id**: bigint (Nullable: NO)
 - **code**: text (Nullable: YES)
@@ -1465,7 +1565,6 @@
 - **description**: text (Nullable: YES)
 
 ### Table: supplier_wallet_transactions
-
 - **id**: bigint (Nullable: NO)
 - **supplier_id**: bigint (Nullable: YES)
 - **amount**: numeric (Nullable: NO)
@@ -1475,14 +1574,12 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: supplier_wallets
-
 - **supplier_id**: bigint (Nullable: NO)
 - **balance**: numeric (Nullable: YES) DEFAULT 0
 - **total_earned**: numeric (Nullable: YES) DEFAULT 0
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: suppliers
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('suppliers_id_seq'::regclass)
 - **name**: text (Nullable: NO)
 - **contact_person**: text (Nullable: YES)
@@ -1500,9 +1597,9 @@
 - **status**: text (Nullable: NO) DEFAULT 'active'::text
 - **notes**: text (Nullable: YES) DEFAULT 'active'::text
 - **bank_bin**: text (Nullable: YES)
+- **shipping_partner_id**: bigint (Nullable: YES)
 
 ### Table: system_logs
-
 - **id**: bigint (Nullable: NO)
 - **user_id**: uuid (Nullable: YES)
 - **module**: text (Nullable: NO)
@@ -1514,14 +1611,12 @@
 - **user_name**: text (Nullable: YES)
 
 ### Table: system_settings
-
 - **key**: text (Nullable: NO)
 - **value**: jsonb (Nullable: YES)
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 - **description**: text (Nullable: YES)
 
 ### Table: tasks
-
 - **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid()
 - **title**: text (Nullable: NO)
 - **description**: text (Nullable: YES)
@@ -1539,7 +1634,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: transaction_categories
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('transaction_categories_id_seq'::regclass)
 - **code**: text (Nullable: NO)
 - **name**: text (Nullable: NO)
@@ -1551,7 +1645,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: transport_vehicles
-
 - **id**: bigint (Nullable: NO)
 - **name**: text (Nullable: NO)
 - **phone**: text (Nullable: YES)
@@ -1561,7 +1654,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: user_roles
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('user_roles_id_seq'::regclass)
 - **user_id**: uuid (Nullable: NO)
 - **role_id**: uuid (Nullable: NO)
@@ -1569,7 +1661,6 @@
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: users
-
 - **id**: uuid (Nullable: NO)
 - **email**: text (Nullable: YES)
 - **full_name**: text (Nullable: YES)
@@ -1600,11 +1691,10 @@
 - **profile_updated_at**: timestamp with time zone (Nullable: YES)
 - **work_state**: text (Nullable: YES) DEFAULT 'working'::text
 - **role_id**: uuid (Nullable: YES)
-- **company_id**: bigint (Nullable: YES)
+- **company_id**: uuid (Nullable: YES)
 - **warehouse_id**: bigint (Nullable: YES)
 
 ### Table: v_active_deals
-
 - **product_id**: integer (Nullable: YES)
 - **deal_id**: integer (Nullable: YES)
 - **deal_name**: text (Nullable: YES)
@@ -1615,7 +1705,6 @@
 - **end_date**: timestamp with time zone (Nullable: YES)
 
 ### Table: vaccination_template_items
-
 - **id**: bigint (Nullable: NO)
 - **template_id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
@@ -1624,7 +1713,6 @@
 - **note**: text (Nullable: YES)
 
 ### Table: vaccination_templates
-
 - **id**: bigint (Nullable: NO)
 - **name**: text (Nullable: NO)
 - **description**: text (Nullable: YES)
@@ -1635,7 +1723,6 @@
 - **updated_at**: timestamp with time zone (Nullable: NO) DEFAULT now()
 
 ### Table: vat_inventory_ledger
-
 - **id**: bigint (Nullable: NO)
 - **product_id**: bigint (Nullable: NO)
 - **vat_rate**: numeric (Nullable: NO) DEFAULT 0
@@ -1644,7 +1731,6 @@
 - **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now()
 
 ### Table: vendor_product_mappings
-
 - **id**: bigint (Nullable: NO)
 - **vendor_tax_code**: text (Nullable: NO)
 - **vendor_product_name**: text (Nullable: NO)
@@ -1654,9 +1740,12 @@
 - **updated_by**: uuid (Nullable: YES)
 - **vendor_unit**: text (Nullable: YES)
 - **internal_unit**: text (Nullable: YES)
+- **supplier_sku**: text (Nullable: YES)
+- **pre_vat_price**: numeric (Nullable: YES)
+- **vat_of_supplier**: numeric (Nullable: YES)
+- **internal_product_unit_id**: bigint (Nullable: YES)
 
 ### Table: vw_task_board
-
 - **id**: uuid (Nullable: YES)
 - **title**: text (Nullable: YES)
 - **description**: text (Nullable: YES)
@@ -1678,7 +1767,6 @@
 - **assigner_avatar**: text (Nullable: YES)
 
 ### Table: warehouses
-
 - **id**: bigint (Nullable: NO) DEFAULT nextval('warehouses_id_seq'::regclass)
 - **key**: text (Nullable: NO)
 - **name**: text (Nullable: NO)
@@ -1692,3 +1780,5 @@
 - **manager**: text (Nullable: YES)
 - **phone**: text (Nullable: YES)
 - **status**: text (Nullable: NO) DEFAULT 'active'::text
+- **company_id**: uuid (Nullable: YES)
+- **outlet_type**: text (Nullable: YES)
