@@ -1,0 +1,10 @@
+.git/
+.vscode/
+.idea/
+.env
+.env.*
+*.log
+tmp/
+*.exe
+docs/swagger.json
+docs/swagger.yaml
