@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -6,11 +6,8 @@ import {
   warehouseSchema,
   Warehouse,
 } from "@namviet/shared-types/src/warehouse.types";
-import { ChevronLeft, Save, Building, MapPin, Phone, Map } from "lucide-react";
+import { ChevronLeft, Save, Building, MapPin, Phone, Hash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { CustomSelect } from "@/components/ui/CustomSelect";
-import { toast } from "sonner";
-import { useCompanies } from "@/hooks/queries/use-companies";
 
 interface WarehouseFormProps {
   initialData?: Warehouse;
@@ -25,15 +22,12 @@ export function WarehouseForm({
 }: WarehouseFormProps) {
   const router = useRouter();
   const isEditing = !!initialData;
-  const [isGettingLocation, setIsGettingLocation] = useState(false);
-  const { data: companies = [] } = useCompanies();
 
   const {
     register,
     handleSubmit,
     control,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<WarehouseFormData>({
     resolver: zodResolver(warehouseSchema) as any,
@@ -67,27 +61,6 @@ export function WarehouseForm({
       });
     }
   }, [initialData, reset]);
-
-  const handleGetLocation = () => {
-    if (!navigator.geolocation) {
-      toast.error('Trình duyệt không hỗ trợ lấy vị trí');
-      return;
-    }
-    
-    setIsGettingLocation(true);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setValue('latitude', position.coords.latitude, { shouldValidate: true });
-        setValue('longitude', position.coords.longitude, { shouldValidate: true });
-        setIsGettingLocation(false);
-        toast.success('Lấy vị trí thành công!');
-      },
-      (error) => {
-        setIsGettingLocation(false);
-        toast.error('Không thể lấy vị trí. Hãy kiểm tra quyền truy cập.');
-      }
-    );
-  };
 
   return (
     <div className="max-w-4xl mx-auto pb-12">
@@ -182,73 +155,49 @@ export function WarehouseForm({
               />
             </div>
 
-            <div className="z-20">
+            <div>
               <label className="block text-sm font-bold text-slate-700 mb-1">
                 Loại hình
               </label>
-              <Controller
-                control={control}
-                name="type"
-                render={({ field }) => (
-                  <CustomSelect
-                    value={field.value}
-                    onChange={field.onChange}
-                    options={[
-                      { value: 'retail', label: 'Cửa hàng Bán lẻ' },
-                      { value: 'b2b', label: 'Kho Sỉ (B2B)' },
-                      { value: 'warehouse', label: 'Tổng Kho' },
-                    ]}
-                  />
-                )}
-              />
+              <select
+                {...register("type")}
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"
+              >
+                <option value="retail">Cửa hàng Bán lẻ</option>
+                <option value="wholesale">Kho Sỉ</option>
+                <option value="warehouse">Tổng Kho</option>
+              </select>
             </div>
 
-            <div className="z-20">
+            <div>
               <label className="block text-sm font-bold text-slate-700 mb-1">
                 Công ty trực thuộc (ID)
               </label>
-              <Controller
-                control={control}
-                name="company_id"
-                render={({ field }) => (
-                  <CustomSelect
-                    value={field.value || ''}
-                    onChange={field.onChange}
-                    placeholder="Không thuộc công ty nào"
-                    options={[
-                      { value: '', label: 'Không thuộc công ty nào' },
-                      ...companies.map(c => ({ value: c.id, label: c.name }))
-                    ]}
-                  />
-                )}
+              <input
+                {...register("company_id")}
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"
+                placeholder="UUID của Công ty (Tùy chọn)"
               />
             </div>
 
-            <div className="z-10">
+            <div>
               <label className="block text-sm font-bold text-slate-700 mb-1">
                 Trạng thái
               </label>
-              <Controller
-                control={control}
-                name="status"
-                render={({ field }) => (
-                  <CustomSelect
-                    value={field.value}
-                    onChange={field.onChange}
-                    options={[
-                      { value: 'active', label: 'Đang hoạt động' },
-                      { value: 'inactive', label: 'Tạm ngưng' },
-                    ]}
-                  />
-                )}
-              />
+              <select
+                {...register("status")}
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"
+              >
+                <option value="active">Đang hoạt động</option>
+                <option value="inactive">Tạm ngưng</option>
+              </select>
             </div>
           </div>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-lg font-bold text-slate-800 mb-4 border-b pb-2">
-            Thông tin Liên hệ & Vị trí
+            Thông tin Liên hệ
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="md:col-span-2">
@@ -265,43 +214,6 @@ export function WarehouseForm({
                   className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"
                   placeholder="Nhập địa chỉ đầy đủ..."
                 />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">
-                Vĩ độ (Latitude)
-              </label>
-              <input
-                type="number"
-                step="any"
-                {...register("latitude")}
-                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"
-                placeholder="VD: 10.762622"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">
-                Kinh độ (Longitude)
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  step="any"
-                  {...register("longitude")}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-primary"
-                  placeholder="VD: 106.660172"
-                />
-                <button 
-                  type="button"
-                  onClick={handleGetLocation}
-                  disabled={isGettingLocation}
-                  className="shrink-0 flex items-center justify-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 px-4 rounded-xl font-bold transition-colors disabled:opacity-50"
-                  title="Lấy vị trí hiện tại"
-                >
-                  {isGettingLocation ? <span className="animate-spin">⏳</span> : <Map size={18} />}
-                </button>
               </div>
             </div>
 

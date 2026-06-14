@@ -1,57 +1,43 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import HeaderBar from '@/components/layout/HeaderBar';
-import MenuBar from '@/components/layout/MenuBar';
-import ChatbotSheet from '@/components/overlays/ChatbotSheet';
-import GlobalSearchModal from '@/components/overlays/GlobalSearchModal';
+import React, { useState } from 'react';
+import { Layout } from 'antd';
+import { Header } from '@/components/layout/Header';
+import { GlobalSearchModal } from '@/components/ui/GlobalSearchModal';
+import MobileBottomNav from '@/components/layout/MobileBottomNav';
+import { useFCM } from '@/hooks/useFCM';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  
-  // Dummy states cho HeaderBar (có thể chuyển vào global state sau)
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+const { Content } = Layout;
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Kích hoạt Firebase Cloud Messaging Hook
+  useFCM();
+
+  // State cho Mobile Bottom Nav
+  const [activeTab, setActiveTab] = useState('home');
+  const [isFabOpen, setIsFabOpen] = useState(false);
 
   return (
-    <div className={`min-h-screen font-sans flex overflow-hidden transition-colors duration-300 ${isDarkMode ? 'dark bg-slate-950 text-white' : 'bg-[#eef2f6] text-slate-900'}`}>
+    <Layout className="min-h-screen bg-gray-50">
+      <Header />
+      <GlobalSearchModal />
       
-      <MenuBar 
-        isDesktopCollapsed={isDesktopCollapsed} 
-        setIsDesktopCollapsed={setIsDesktopCollapsed} 
+      {/* Content tràn viền, loại bỏ margin cứng, dùng padding siêu nhỏ (px-2 md:px-4) */}
+      <Content className="w-full max-w-7xl mx-auto px-2 sm:px-4 py-4 md:py-6 pb-24 md:pb-6">
+        {children}
+      </Content>
+
+      <MobileBottomNav 
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        cartCount={3}
+        isFabOpen={isFabOpen}
+        toggleFabMenu={() => setIsFabOpen(!isFabOpen)}
       />
-
-      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 h-screen ${isDesktopCollapsed ? 'lg:pl-16' : 'lg:pl-64'}`}>
-        
-        <HeaderBar 
-          isDarkMode={isDarkMode}
-          setIsDarkMode={setIsDarkMode}
-          isProfileOpen={isProfileOpen}
-          setIsProfileOpen={setIsProfileOpen}
-          isChatOpen={isChatOpen}
-          setIsChatOpen={setIsChatOpen}
-          isSearchOpen={isSearchOpen}
-          setIsSearchOpen={setIsSearchOpen}
-        />
-
-        {/* Khu vực nội dung chính của App Router */}
-        <main className="flex-1 overflow-y-auto custom-scrollbar relative z-10 w-full bg-[#eef2f6] dark:bg-slate-950 p-4">
-          {children}
-        </main>
-        
-      </div>
-      <ChatbotSheet isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
-      <GlobalSearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-    </div>
+    </Layout>
   );
 }
