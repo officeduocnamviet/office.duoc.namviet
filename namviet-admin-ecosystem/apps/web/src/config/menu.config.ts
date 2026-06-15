@@ -1,6 +1,6 @@
 import { 
   Store, Activity, PackageSearch, Boxes, Receipt, Headphones,
-  Users, Megaphone, BarChart3, Settings
+  Users, Megaphone, BarChart3, Settings, MessageSquare, BrainCircuit
 } from 'lucide-react';
 
 export const MENU_DATA = [
@@ -18,14 +18,31 @@ export const MENU_DATA = [
         ]
       },
       {
-        id: 'medical',
-        name: 'Y Tế',
+        id: 'customers',
+        name: 'Khách hàng & Đối tác',
+        icon: Users,
+        children: [
+          { href: '/customers', name: 'Quản lý Khách hàng' },
+        ]
+      },
+      {
+        id: 'catalog',
+        name: 'Sản phẩm & Danh mục',
+        icon: Boxes,
+        children: [
+          { href: '/products', name: 'Quản lý Sản phẩm' },
+          { href: '/categories', name: 'Nhóm Sản phẩm' },
+          { href: '/manufacturers', name: 'Nhà sản xuất' },
+        ]
+      },
+      {
+        id: 'clinical',
+        name: 'Y Tế & Lâm sàng',
         icon: Activity,
         children: [
-          { href: '/medical/reception', name: 'Lễ Tân' },
-          { href: '/medical/clinic', name: 'Phòng Khám' },
-          { href: '/medical/nursing', name: 'Điều Dưỡng và Thủ Thuật' },
-          { href: '/medical/testing', name: 'CĐHA và Xét nghiệm' },
+          { href: '/clinical/appointments', name: 'Lịch hẹn (Appointments)' },
+          { href: '/clinical/queues', name: 'Hàng đợi (Queues)' },
+          { href: '/clinical/visits', name: 'Hồ sơ khám (Visits)' },
         ]
       },
       {
@@ -47,19 +64,21 @@ export const MENU_DATA = [
           { href: '/inventory/export', name: 'Xuất hàng' },
           { href: '/inventory/transfer', name: 'Chuyển hàng (Kho)' },
           { href: '/inventory/check', name: 'Kiểm kê' },
+          { href: '/inventory/batches', name: 'Quản lý Lô Hàng' },
           { href: '/inventory/gifts', name: 'Quản lý Quà tặng' },
           { href: '/inventory/assets', name: 'Quản lý Vật tư (Tài sản)' },
           { href: '/inventory/shipping', name: 'Giao vận (Theo dõi)' },
         ]
       },
       {
-        id: 'accounting',
-        name: 'Kế toán',
+        id: 'finance',
+        name: 'Tài chính & Kế toán',
         icon: Receipt,
         children: [
-          { href: '/accounting/receipt', name: 'Phiếu Thu / Chi' },
-          { href: '/accounting/vat', name: 'Hóa đơn VAT' },
-          { href: '/accounting/report', name: 'Báo cáo tài chính nhanh' },
+          { href: '/finance/funds', name: 'Quỹ & Tài khoản' },
+          { href: '/finance/transactions', name: 'Giao dịch Tài chính' },
+          { href: '/finance/coa', name: 'Hệ thống Tài khoản' },
+          { href: '/finance/journals', name: 'Nhật ký chung' },
         ]
       },
       {
@@ -80,13 +99,16 @@ export const MENU_DATA = [
     items: [
       {
         id: 'hr',
-        name: 'Nhân sự & Đào tạo',
+        name: 'Nhân sự & Tính lương',
         icon: Users,
         children: [
-          { href: '/hr/profile', name: 'Hồ sơ Nhân sự' },
-          { href: '/hr/contract', name: 'Hợp đồng & Bảo hiểm' },
-          { href: '/hr/training', name: 'Khóa học & Bài thi' },
-          { href: '/hr/kpi', name: 'Giao việc & KPI' },
+          { href: '/hr/employees', name: 'Hồ sơ nhân viên' },
+          { href: '/hr/contracts', name: 'Hợp đồng lao động' },
+          { href: '/hr/attendance', name: 'Chấm công' },
+          { href: '/hr/shifts', name: 'Lịch phân ca' },
+          { href: '/hr/handovers', name: 'Bàn giao ca' },
+          { href: '/hr/payrolls', name: 'Bảng lương' },
+          { href: '/hr/training', name: 'Khóa đào tạo' },
         ]
       },
       {
@@ -94,6 +116,7 @@ export const MENU_DATA = [
         name: 'Marketing & PTKH',
         icon: Megaphone,
         children: [
+          { href: '/marketing/campaigns', name: 'Chiến dịch Marketing' },
           { href: '/marketing/segment', name: 'Nhóm khách hàng' },
           { href: '/marketing/voucher', name: 'Voucher & CTKM' },
           { href: '/marketing/sms', name: 'Tin nhắn hàng loạt' },
@@ -111,13 +134,33 @@ export const MENU_DATA = [
         ]
       },
       {
-        id: 'master_data',
-        name: 'Cấu hình Hệ thống',
+        id: 'system',
+        name: 'Hệ thống & Tích hợp',
         icon: Settings,
         children: [
+          { href: '/system/configs', name: 'Cấu hình chung' },
+          { href: '/system/approvals', name: 'Trung tâm Phê duyệt' },
+          { href: '/system/integrations', name: 'Đối tác & Webhook' },
           { href: '/warehouses', name: 'Quản lý Chi nhánh' },
           { href: '/roles', name: 'Quản lý Phân quyền' },
           { href: '/users', name: 'Quản lý Nhân sự' },
+        ]
+      },
+      {
+        id: 'communications',
+        name: 'Giao tiếp Nội bộ',
+        icon: MessageSquare,
+        children: [
+          { href: '/communications/chat', name: 'Kênh Chat Nội bộ' },
+        ]
+      },
+      {
+        id: 'ai_ecosystem',
+        name: 'Hệ sinh thái AI',
+        icon: BrainCircuit,
+        children: [
+          { href: '/ai/knowledge', name: 'Tri thức AI (Vectors)' },
+          { href: '/ai/supervisor', name: 'Giám sát Chatbot' },
         ]
       }
     ]

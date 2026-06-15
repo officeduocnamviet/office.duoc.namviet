@@ -7,10 +7,20 @@ const inter = Inter({ subsets: ['latin', 'vietnamese'] });
 export const metadata: Metadata = {
   title: 'Nam Việt ERP',
   description: 'Hệ thống quản trị Dược Nam Việt',
+  manifest: '/manifest.json',
+};
+
+export const viewport: import('next').Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#2563eb',
 };
 
 import { Toaster } from 'sonner';
 import { Providers } from '@/components/providers';
+import { PwaRegistrar } from '@/components/PwaRegistrar';
 
 export default function RootLayout({
   children,
@@ -20,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body className={inter.className}>
+        <PwaRegistrar />
         <Providers>
           {children}
           <Toaster richColors position="top-center" />
