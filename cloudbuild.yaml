@@ -22,3 +22,5 @@ steps:
 
 images:
   - 'gcr.io/$PROJECT_ID/namviet-official:$COMMIT_SHA'
+options:
+  logging: CLOUD_LOGGING_ONLY
