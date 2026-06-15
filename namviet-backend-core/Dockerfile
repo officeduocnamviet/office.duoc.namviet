@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang:1.22-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
 # Thiết lập thư mục làm việc trong container
 WORKDIR /app

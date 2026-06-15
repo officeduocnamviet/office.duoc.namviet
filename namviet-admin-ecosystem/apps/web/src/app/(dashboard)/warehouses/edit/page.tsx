@@ -1,15 +1,16 @@
 "use client";
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { WarehouseForm } from '@/components/features/warehouses/warehouse-form';
 import { useWarehouse, useUpdateWarehouse } from '@/hooks/queries/use-warehouses';
 import { WarehouseFormData } from '@namviet/shared-types/src/warehouse.types';
 import { toast } from 'sonner';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function EditWarehousePage() {
-  const params = useParams();
-  const id = parseInt(params.id as string, 10);
+function EditWarehouseContent() {
+  const searchParams = useSearchParams();
+  const idParam = searchParams.get('id');
+  const id = idParam ? parseInt(idParam, 10) : 0;
   const router = useRouter();
 
   const { data: warehouse, isLoading: isFetching, error } = useWarehouse(id);
@@ -19,13 +20,16 @@ export default function EditWarehousePage() {
     updateMutation.mutate({ id, data }, {
       onSuccess: () => {
         toast.success('Cập nhật chi nhánh thành công!');
-        // Giữ nguyên giao diện sửa như yêu cầu từ trước, chỉ thông báo thành công.
       },
       onError: (err) => {
         toast.error(`Lỗi: ${err.message}`);
       }
     });
   };
+
+  if (!id) {
+    return <div className="p-6">Không tìm thấy mã chi nhánh</div>;
+  }
 
   if (error) {
     return (
@@ -50,5 +54,13 @@ export default function EditWarehousePage() {
         />
       )}
     </div>
+  );
+}
+
+export default function EditWarehousePage() {
+  return (
+    <Suspense fallback={<div>Đang tải...</div>}>
+      <EditWarehouseContent />
+    </Suspense>
   );
 }

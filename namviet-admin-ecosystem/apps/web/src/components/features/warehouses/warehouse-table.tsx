@@ -33,7 +33,7 @@ export function WarehouseTable({ data, isLoading, onDelete, onToggleStatus }: Wa
         <div>
           <div 
             className="font-bold text-sm text-primary-600 dark:text-blue-400 hover:underline cursor-pointer"
-            onClick={() => router.push(`/warehouses/${row.original.id}/edit`)}
+            onClick={() => router.push(`/warehouses/edit?id=${row.original.id}`)}
           >
             {row.original.name}
           </div>
@@ -88,7 +88,7 @@ export function WarehouseTable({ data, isLoading, onDelete, onToggleStatus }: Wa
       cell: ({ row }) => (
         <div className="flex items-center gap-1.5">
           <button 
-            onClick={() => router.push(`/warehouses/${row.original.id}/edit`)}
+            onClick={() => router.push(`/warehouses/edit?id=${row.original.id}`)}
             className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
             title="Chỉnh sửa"
           >
