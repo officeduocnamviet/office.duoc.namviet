@@ -1,6 +1,6 @@
 module github.com/namviet/backend-core
 
-go 1.26.3
+go 1.22.0
 
 require (
 	firebase.google.com/go/v4 v4.20.0
