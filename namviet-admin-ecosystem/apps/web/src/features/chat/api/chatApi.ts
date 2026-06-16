@@ -9,22 +9,22 @@ export type CreateInternalMessageRequest = import('@namviet/shared-types/src/bac
 
 export const chatApi = {
   getChannels: async (): Promise<InternalChannel[]> => {
-    const { data } = await apiClient.get<InternalChannel[]>('/api/internal-channels');
+    const { data } = await apiClient.get<InternalChannel[]>('/internal-channels');
     return data;
   },
   
   createChannel: async (req: CreateInternalChannelRequest): Promise<InternalChannel> => {
-    const { data } = await apiClient.post<InternalChannel>('/api/internal-channels', req);
+    const { data } = await apiClient.post<InternalChannel>('/internal-channels', req);
     return data;
   },
 
   getMessages: async (channelId: number): Promise<InternalMessage[]> => {
-    const { data } = await apiClient.get<InternalMessage[]>(`/api/internal-channels/${channelId}/messages`);
+    const { data } = await apiClient.get<InternalMessage[]>(`/internal-channels/${channelId}/messages`);
     return data;
   },
 
   sendMessage: async (req: CreateInternalMessageRequest): Promise<InternalMessage> => {
-    const { data } = await apiClient.post<InternalMessage>('/api/internal-messages', req);
+    const { data } = await apiClient.post<InternalMessage>('/internal-messages', req);
     return data;
   }
 };

@@ -6,21 +6,21 @@ export type UpdateMarketingCampaignRequest = import('@namviet/shared-types/src/b
 
 export const campaignApi = {
   getCampaigns: async (): Promise<MarketingCampaign[]> => {
-    const response = await apiClient.get<MarketingCampaign[]>('/api/marketing-campaigns');
+    const response = await apiClient.get<MarketingCampaign[]>('/marketing-campaigns');
     return response.data;
   },
 
   createCampaign: async (data: CreateMarketingCampaignRequest): Promise<MarketingCampaign> => {
-    const response = await apiClient.post<MarketingCampaign>('/api/marketing-campaigns', data);
+    const response = await apiClient.post<MarketingCampaign>('/marketing-campaigns', data);
     return response.data;
   },
 
   updateCampaign: async (id: string, data: UpdateMarketingCampaignRequest): Promise<MarketingCampaign> => {
-    const response = await apiClient.put<MarketingCampaign>(`/api/marketing-campaigns/${id}`, data);
+    const response = await apiClient.put<MarketingCampaign>(`/marketing-campaigns/${id}`, data);
     return response.data;
   },
 
   deleteCampaign: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/marketing-campaigns/${id}`);
+    await apiClient.delete(`/marketing-campaigns/${id}`);
   }
 };

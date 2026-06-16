@@ -45,48 +45,48 @@ export type CreateTrainingCourseRequest = import('@namviet/shared-types/src/back
 
 export const hrApi = {
   // Employees
-  getEmployees: () => api.get<Employee[]>('/api/employees').then(res => res.data),
-  getEmployee: (id: string) => api.get<Employee>(`/api/employees/${id}`).then(res => res.data),
-  createEmployee: (data: CreateEmployeeRequest) => api.post<Employee>('/api/employees', data).then(res => res.data),
-  updateEmployee: (id: string, data: UpdateEmployeeRequest) => api.put<Employee>(`/api/employees/${id}`, data).then(res => res.data),
-  deleteEmployee: (id: string) => api.delete(`/api/employees/${id}`).then(res => res.data),
+  getEmployees: () => api.get<Employee[]>('/employees').then(res => res.data),
+  getEmployee: (id: string) => api.get<Employee>(`/employees/${id}`).then(res => res.data),
+  createEmployee: (data: CreateEmployeeRequest) => api.post<Employee>('/employees', data).then(res => res.data),
+  updateEmployee: (id: string, data: UpdateEmployeeRequest) => api.put<Employee>(`/employees/${id}`, data).then(res => res.data),
+  deleteEmployee: (id: string) => api.delete(`/employees/${id}`).then(res => res.data),
 
   // Time Attendance
-  getAttendances: () => api.get<TimeAttendance[]>('/api/time-attendances').then(res => res.data),
-  getAttendance: (id: string) => api.get<TimeAttendance>(`/api/time-attendances/${id}`).then(res => res.data),
-  createAttendance: (data: CreateTimeAttendanceRequest) => api.post<TimeAttendance>('/api/time-attendances', data).then(res => res.data),
-  updateAttendance: (id: string, data: UpdateTimeAttendanceRequest) => api.put<TimeAttendance>(`/api/time-attendances/${id}`, data).then(res => res.data),
-  deleteAttendance: (id: string) => api.delete(`/api/time-attendances/${id}`).then(res => res.data),
+  getAttendances: () => api.get<TimeAttendance[]>('/time-attendances').then(res => res.data),
+  getAttendance: (id: string) => api.get<TimeAttendance>(`/time-attendances/${id}`).then(res => res.data),
+  createAttendance: (data: CreateTimeAttendanceRequest) => api.post<TimeAttendance>('/time-attendances', data).then(res => res.data),
+  updateAttendance: (id: string, data: UpdateTimeAttendanceRequest) => api.put<TimeAttendance>(`/time-attendances/${id}`, data).then(res => res.data),
+  deleteAttendance: (id: string) => api.delete(`/time-attendances/${id}`).then(res => res.data),
 
   // Payrolls
-  getPayrolls: () => api.get<Payroll[]>('/api/payrolls').then(res => res.data),
-  getPayroll: (id: string) => api.get<Payroll>(`/api/payrolls/${id}`).then(res => res.data),
-  createPayroll: (data: CreatePayrollRequest) => api.post<Payroll>('/api/payrolls', data).then(res => res.data),
-  updatePayroll: (id: string, data: UpdatePayrollRequest) => api.put<Payroll>(`/api/payrolls/${id}`, data).then(res => res.data),
-  deletePayroll: (id: string) => api.delete(`/api/payrolls/${id}`).then(res => res.data),
+  getPayrolls: () => api.get<Payroll[]>('/payrolls').then(res => res.data),
+  getPayroll: (id: string) => api.get<Payroll>(`/payrolls/${id}`).then(res => res.data),
+  createPayroll: (data: CreatePayrollRequest) => api.post<Payroll>('/payrolls', data).then(res => res.data),
+  updatePayroll: (id: string, data: UpdatePayrollRequest) => api.put<Payroll>(`/payrolls/${id}`, data).then(res => res.data),
+  deletePayroll: (id: string) => api.delete(`/payrolls/${id}`).then(res => res.data),
 
   // Attendance Logs (Check-in/Check-out)
-  getAttendanceLogs: () => api.get<AttendanceLog[]>('/api/attendance-logs').then(res => res.data),
-  createAttendanceLog: (data: CreateAttendanceLogRequest) => api.post<AttendanceLog>('/api/attendance-logs', data).then(res => res.data),
-  updateAttendanceLog: (id: string, data: UpdateAttendanceLogRequest) => api.put<AttendanceLog>(`/api/attendance-logs/${id}`, data).then(res => res.data),
+  getAttendanceLogs: () => api.get<AttendanceLog[]>('/attendance-logs').then(res => res.data),
+  createAttendanceLog: (data: CreateAttendanceLogRequest) => api.post<AttendanceLog>('/attendance-logs', data).then(res => res.data),
+  updateAttendanceLog: (id: string, data: UpdateAttendanceLogRequest) => api.put<AttendanceLog>(`/attendance-logs/${id}`, data).then(res => res.data),
 
   // Work Shifts
-  getWorkShifts: () => api.get<WorkShift[]>('/api/work-shifts').then(res => res.data),
-  createWorkShift: (data: CreateWorkShiftRequest) => api.post<WorkShift>('/api/work-shifts', data).then(res => res.data),
+  getWorkShifts: () => api.get<WorkShift[]>('/work-shifts').then(res => res.data),
+  createWorkShift: (data: CreateWorkShiftRequest) => api.post<WorkShift>('/work-shifts', data).then(res => res.data),
   
   // Shift Assignments
-  getShiftAssignments: () => api.get<ShiftAssignment[]>('/api/shift-assignments').then(res => res.data),
-  createShiftAssignment: (data: CreateShiftAssignmentRequest) => api.post<ShiftAssignment>('/api/shift-assignments', data).then(res => res.data),
+  getShiftAssignments: () => api.get<ShiftAssignment[]>('/shift-assignments').then(res => res.data),
+  createShiftAssignment: (data: CreateShiftAssignmentRequest) => api.post<ShiftAssignment>('/shift-assignments', data).then(res => res.data),
 
   // Shift Handovers
-  getShiftHandovers: () => api.get<ShiftHandover[]>('/api/shift-handovers').then(res => res.data),
-  createShiftHandover: (data: CreateShiftHandoverRequest) => api.post<ShiftHandover>('/api/shift-handovers', data).then(res => res.data),
+  getShiftHandovers: () => api.get<ShiftHandover[]>('/shift-handovers').then(res => res.data),
+  createShiftHandover: (data: CreateShiftHandoverRequest) => api.post<ShiftHandover>('/shift-handovers', data).then(res => res.data),
 
   // Employment Contracts
-  getEmploymentContracts: () => api.get<EmploymentContract[]>('/api/employment-contracts').then(res => res.data),
-  createEmploymentContract: (data: CreateEmploymentContractRequest) => api.post<EmploymentContract>('/api/employment-contracts', data).then(res => res.data),
+  getEmploymentContracts: () => api.get<EmploymentContract[]>('/employment-contracts').then(res => res.data),
+  createEmploymentContract: (data: CreateEmploymentContractRequest) => api.post<EmploymentContract>('/employment-contracts', data).then(res => res.data),
 
   // Training Courses
-  getTrainingCourses: () => api.get<TrainingCourse[]>('/api/training-courses').then(res => res.data),
-  createTrainingCourse: (data: CreateTrainingCourseRequest) => api.post<TrainingCourse>('/api/training-courses', data).then(res => res.data),
+  getTrainingCourses: () => api.get<TrainingCourse[]>('/training-courses').then(res => res.data),
+  createTrainingCourse: (data: CreateTrainingCourseRequest) => api.post<TrainingCourse>('/training-courses', data).then(res => res.data),
 };

@@ -21,7 +21,7 @@ export interface BotMessageLog {
 
 export const supervisorApi = {
   getSessions: async (): Promise<BotSession[]> => {
-    // const { data } = await apiClient.get<BotSession[]>('/api/ai/bot-sessions');
+    // const { data } = await apiClient.get<BotSession[]>('/ai/bot-sessions');
     // return data;
     
     // Mock data for UI presentation
@@ -48,7 +48,7 @@ export const supervisorApi = {
   },
 
   getMessages: async (sessionId: string): Promise<BotMessageLog[]> => {
-    // const { data } = await apiClient.get<BotMessageLog[]>(`/api/ai/bot-sessions/${sessionId}/messages`);
+    // const { data } = await apiClient.get<BotMessageLog[]>(`/ai/bot-sessions/${sessionId}/messages`);
     // return data;
     
     return [

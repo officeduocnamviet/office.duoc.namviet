@@ -8,22 +8,22 @@ export type CreateProductVectorReq = import('@namviet/shared-types/src/backend.d
 
 export const knowledgeApi = {
   getMedicalVectors: async (): Promise<MedicalVector[]> => {
-    const { data } = await apiClient.get<MedicalVector[]>('/api/medical-vectors');
+    const { data } = await apiClient.get<MedicalVector[]>('/medical-vectors');
     return data;
   },
 
   createMedicalVector: async (req: CreateMedicalVectorReq): Promise<MedicalVector> => {
-    const { data } = await apiClient.post<MedicalVector>('/api/medical-vectors', req);
+    const { data } = await apiClient.post<MedicalVector>('/medical-vectors', req);
     return data;
   },
 
   getProductVectors: async (): Promise<ProductVector[]> => {
-    const { data } = await apiClient.get<ProductVector[]>('/api/product-vectors');
+    const { data } = await apiClient.get<ProductVector[]>('/product-vectors');
     return data;
   },
 
   createProductVector: async (req: CreateProductVectorReq): Promise<ProductVector> => {
-    const { data } = await apiClient.post<ProductVector>('/api/product-vectors', req);
+    const { data } = await apiClient.post<ProductVector>('/product-vectors', req);
     return data;
   }
 };
