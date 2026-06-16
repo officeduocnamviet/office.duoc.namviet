@@ -25,8 +25,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData, onSucce
       form.setFieldsValue({
         ...initialData,
         dob: initialData.dob ? dayjs(initialData.dob) : undefined,
-        b2b_tax_code: initialData.b2b_metadata?.[0] || '',
-        b2b_company: initialData.b2b_metadata?.[1] || '',
+        b2b_tax_code: (initialData.b2b_metadata as any)?.tax_code || '',
+        b2b_company: (initialData.b2b_metadata as any)?.company || '',
       });
     } else {
       setIsB2B(false);
@@ -45,7 +45,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData, onSucce
       gender: values.gender,
       cccd: values.cccd,
       dob: values.dob ? values.dob.format('YYYY-MM-DD') : undefined,
-      b2b_metadata: isB2B ? [values.b2b_tax_code || '', values.b2b_company || ''] : undefined,
+      b2b_metadata: isB2B ? ({ tax_code: values.b2b_tax_code || '', company: values.b2b_company || '' } as any) : undefined,
     };
 
     if (initialData?.id) {

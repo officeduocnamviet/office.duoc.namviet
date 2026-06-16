@@ -138,14 +138,14 @@ export const ExcelImport = () => {
 
     const payload = {
       warehouse_id: warehouseId,
-      transaction_type: 'IMPORT',
-      reference_type: 'EXCEL',
+      type: 'inbound',
+      action_group: 'EXCEL',
       notes: notes || 'Nhập kho bằng file Excel',
       items: validItems.map(item => ({
         product_id: item.product_id!,
         batch_id: item.batch_id || 0, // Backend cần hỗ trợ tạo Lô nếu truyền 0 + batch_code
         quantity: item.quantity,
-        price: item.price,
+        unit_price: item.price,
       }))
     };
 

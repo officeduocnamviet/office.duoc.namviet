@@ -54,13 +54,13 @@ export const RetailOrderForm = () => {
       order_type: 'RETAIL',
       customer_id: data.customer_id,
       note: data.note,
-      items: data.items.map(i => ({
+      items: data.items ? data.items.map(i => ({
         product_id: i.product_id,
         quantity: i.quantity,
         unit_price: i.unit_price,
         uom: i.uom,
         discount: i.discount || 0,
-      }))
+      })) : []
     };
 
     createMutation.mutate(payload, {

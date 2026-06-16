@@ -8,6 +8,14 @@ export const metadata: Metadata = {
   title: 'Nam Việt ERP',
   description: 'Hệ thống quản trị Dược Nam Việt',
   manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    title: 'Nam Việt ERP',
+    statusBarStyle: 'default',
+  },
+  icons: {
+    apple: '/logo.png',
+  }
 };
 
 export const viewport: import('next').Viewport = {

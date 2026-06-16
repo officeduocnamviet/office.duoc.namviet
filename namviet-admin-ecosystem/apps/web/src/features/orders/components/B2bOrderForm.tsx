@@ -92,14 +92,14 @@ export const B2bOrderForm = () => {
       order_type: "B2B",
       customer_id: data.customer_id,
       note: data.note,
-      items: data.items.map((i) => ({
+      items: data.items ? data.items.map((i) => ({
         product_id: i.product_id,
         batch_no: i.batch_no,
         quantity: i.quantity,
         unit_price: i.unit_price,
         uom: i.uom,
         discount: i.discount || 0,
-      })),
+      })) : [],
     };
 
     createMutation.mutate(payload, {

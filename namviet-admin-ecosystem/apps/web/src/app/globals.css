@@ -18,3 +18,14 @@ body {
     font-size: 16px !important;
   }
 }
+
+/* Tà đạo tối ưu hóa PWA */
+.gpu-accelerate {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+button, a, .ant-btn {
+  touch-action: manipulation !important;
+}

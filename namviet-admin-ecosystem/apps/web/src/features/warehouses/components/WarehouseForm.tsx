@@ -10,7 +10,12 @@ import { toast } from 'sonner';
 const schema = z.object({
   name: z.string().min(2, 'Tên chi nhánh phải có ít nhất 2 ký tự'),
   type: z.enum(['MAIN', 'BRANCH', 'STORE']),
-  status: z.enum(['ACTIVE', 'INACTIVE']),
+  key: z.string().min(1, 'Key là bắt buộc'),
+  unit: z.string().optional(),
+  latitude: z.any().optional(),
+  longitude: z.any().optional(),
+  code: z.string().optional(),
+  phone: z.string().optional(),
   address: z.string().optional(),
   manager: z.string().optional(),
 });
@@ -33,7 +38,12 @@ export const WarehouseForm: React.FC<WarehouseFormProps> = ({ initialData, onSuc
     defaultValues: {
       name: initialData?.name || '',
       type: (initialData?.type as any) || 'BRANCH',
-      status: (initialData?.status as any) || 'ACTIVE',
+      key: (initialData as any)?.key || '',
+      unit: (initialData as any)?.unit || '',
+      latitude: (initialData as any)?.latitude || undefined,
+      longitude: (initialData as any)?.longitude || undefined,
+      code: (initialData as any)?.code || '',
+      phone: (initialData as any)?.phone || '',
       address: initialData?.address || '',
       manager: initialData?.manager || '',
     }
@@ -100,14 +110,81 @@ export const WarehouseForm: React.FC<WarehouseFormProps> = ({ initialData, onSuc
         />
 
         <Controller
-          name="status"
+          name="key"
           control={control}
           render={({ field }) => (
-            <Form.Item label="Trạng thái">
-              <Select {...field} options={[
-                { value: 'ACTIVE', label: 'Hoạt động' },
-                { value: 'INACTIVE', label: 'Đóng cửa' },
-              ]} />
+            <Form.Item 
+              label="Mã định danh (Key)" 
+              validateStatus={errors.key ? 'error' : ''}
+              help={errors.key?.message}
+              required
+            >
+              <Input {...field} placeholder="VD: KHO_HN" />
+            </Form.Item>
+          )}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <Controller
+          name="code"
+          control={control}
+          render={({ field }) => (
+            <Form.Item label="Mã số (Code)">
+              <Input {...field} placeholder="VD: WH-001" />
+            </Form.Item>
+          )}
+        />
+
+        <Controller
+          name="unit"
+          control={control}
+          render={({ field }) => (
+            <Form.Item label="Đơn vị quản lý">
+              <Input {...field} placeholder="VD: Chi nhánh MB" />
+            </Form.Item>
+          )}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <Form.Item label="Số điện thoại">
+              <Input {...field} placeholder="0987654321" />
+            </Form.Item>
+          )}
+        />
+        <Controller
+          name="manager"
+          control={control}
+          render={({ field }) => (
+            <Form.Item label="Người quản lý">
+              <Input {...field} placeholder="Nguyễn Văn A" />
+            </Form.Item>
+          )}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <Controller
+          name="latitude"
+          control={control}
+          render={({ field }) => (
+            <Form.Item label="Vĩ độ (Latitude)">
+              <Input type="number" step="any" {...field} placeholder="21.0285" />
+            </Form.Item>
+          )}
+        />
+
+        <Controller
+          name="longitude"
+          control={control}
+          render={({ field }) => (
+            <Form.Item label="Kinh độ (Longitude)">
+              <Input type="number" step="any" {...field} placeholder="105.8542" />
             </Form.Item>
           )}
         />
