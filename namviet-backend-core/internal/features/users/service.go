@@ -55,14 +55,15 @@ func CreateUserService(req CreateUserRequest) (*User, error) {
 	// 2. Insert into public.users
 	user := &User{
 		ID:        authUser.ID,
-		Email:     req.Email,
-		FullName:  req.FullName,
-		Phone:     req.Phone,
-		RoleID:    req.RoleID,
-		CompanyID: req.CompanyID,
-		Status:    "active",
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Email:       req.Email,
+		FullName:    req.FullName,
+		Phone:       req.Phone,
+		RoleID:      req.RoleID,
+		CompanyID:   req.CompanyID,
+		WarehouseID: req.WarehouseID,
+		Status:      "active",
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}
 
 	if err := Create(user); err != nil {
@@ -92,6 +93,9 @@ func UpdateUserService(id string, req UpdateUserRequest) (*User, error) {
 	}
 	if req.RoleID != "" {
 		user.RoleID = req.RoleID
+	}
+	if req.WarehouseID != nil {
+		user.WarehouseID = req.WarehouseID
 	}
 
 	if err := Update(user); err != nil {
