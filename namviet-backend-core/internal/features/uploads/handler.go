@@ -11,7 +11,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UploadImage handles image upload to Cloudinary
+// @Summary Upload an image to Cloudinary
+// @Description Uploads a multipart/form-data image file to Cloudinary and returns the optimized public URL.
+// @Tags uploads
+// @Accept multipart/form-data
+// @Produce json
+// @Param image formData file true "Image file to upload"
+// @Success 200 {object} map[string]interface{} "{"url": "https://..."}"
+// @Failure 400 {object} map[string]interface{} "Bad Request"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Security BearerAuth
+// @Router /api/upload [post]
 func UploadImage(c *gin.Context) {
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {

@@ -3679,6 +3679,41 @@ paths:
       summary: Update AI Agent Memory
       tags:
       - AI Ecosystem
+  /api/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads a multipart/form-data image file to Cloudinary and returns
+        the optimized public URL.
+      parameters:
+      - description: Image file to upload
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"url": "https://..."}'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Upload an image to Cloudinary
+      tags:
+      - uploads
   /appointments:
     get:
       consumes:
