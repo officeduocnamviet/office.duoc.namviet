@@ -46,6 +46,9 @@ import (
 	"github.com/namviet/backend-core/internal/features/user_notifications"
 	"github.com/namviet/backend-core/internal/platform/firebase"
 	"github.com/namviet/backend-core/internal/platform/supabase"
+	// Upload routes
+	uploads "github.com/namviet/backend-core/internal/features/uploads"
+
 	auth_middleware "github.com/namviet/backend-core/internal/middleware"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -123,6 +126,7 @@ func main() {
 	fund_accounts.RegisterRoutes(protectedAPI)
 	finance_transactions.RegisterRoutes(protectedAPI)
 	chart_of_accounts.RegisterRoutes(protectedAPI)
+	uploads.RegisterRoutes(protectedAPI)
 	accounting_journals.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 7: SYSTEM, APPROVALS & INTEGRATIONS (Hệ thống & Tích hợp) ---

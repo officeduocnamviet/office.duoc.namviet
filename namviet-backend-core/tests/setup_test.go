@@ -22,6 +22,7 @@ import (
 	accounting_journals "github.com/namviet/backend-core/internal/features/accounting_journals"
 	finance_transactions "github.com/namviet/backend-core/internal/features/finance_transactions"
 	fund_accounts "github.com/namviet/backend-core/internal/features/fund_accounts"
+	uploads "github.com/namviet/backend-core/internal/features/uploads"
 	auth_middleware "github.com/namviet/backend-core/internal/middleware"
 	"github.com/namviet/backend-core/internal/platform/supabase"
 )
@@ -59,6 +60,7 @@ func SetupTestRouter() *gin.Engine {
 	inventory.RegisterRoutes(protectedAPI)
 	customers.RegisterRoutes(protectedAPI)
 	orders.RegisterRoutes(protectedAPI)
+	uploads.RegisterRoutes(protectedAPI)
 	accounting_journals.RegisterRoutes(protectedAPI)
 	finance_transactions.RegisterRoutes(protectedAPI)
 	fund_accounts.RegisterRoutes(protectedAPI)
