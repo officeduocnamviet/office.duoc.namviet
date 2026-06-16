@@ -14,8 +14,6 @@ type CreateProductRequest struct {
 	WholesaleUnit    *string `json:"wholesale_unit"`
 	RetailUnit       *string `json:"retail_unit"`
 	ConversionFactor *int    `json:"conversion_factor"`
-	PriceCost        *float64 `json:"price_cost"`
-	PriceSell        *float64 `json:"price_sell"`
 }
 
 // UpdateProductRequest

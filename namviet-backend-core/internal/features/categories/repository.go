@@ -40,3 +40,8 @@ func UpdateCategory(category *Category) error {
 	db := supabase.DB
 	return db.Save(category).Error
 }
+
+// DeleteCategory soft deletes a category
+func DeleteCategory(id int64) error {
+	return supabase.DB.Model(&Category{}).Where("id = ?", id).Update("deleted_at", "now()").Error
+}

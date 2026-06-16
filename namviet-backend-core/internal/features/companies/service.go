@@ -1,6 +1,10 @@
 package companies
 
-import "time"
+import (
+	"time"
+
+	"github.com/lib/pq"
+)
 
 // Companies
 func GetAllCompaniesService() ([]Company, error) {
@@ -24,8 +28,8 @@ func CreateCompanyService(req CreateCompanyRequest) (*Company, error) {
 		Status:             "active",
 	}
 
-	if req.BusinessImageLicenseURL != nil {
-		company.BusinessImageLicenseURL = *req.BusinessImageLicenseURL
+	if req.BusinessLicenseURL != nil {
+		company.BusinessLicenseURL = pq.StringArray(*req.BusinessLicenseURL)
 	}
 
 	if err := CreateCompany(company); err != nil {
@@ -64,8 +68,8 @@ func UpdateCompanyService(id string, req UpdateCompanyRequest) (*Company, error)
 	if req.RepresentativeName != nil {
 		company.RepresentativeName = req.RepresentativeName
 	}
-	if req.BusinessImageLicenseURL != nil {
-		company.BusinessImageLicenseURL = *req.BusinessImageLicenseURL
+	if req.BusinessLicenseURL != nil {
+		company.BusinessLicenseURL = pq.StringArray(*req.BusinessLicenseURL)
 	}
 	if req.Status != nil {
 		company.Status = *req.Status

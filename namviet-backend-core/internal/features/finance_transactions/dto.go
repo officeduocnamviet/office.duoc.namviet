@@ -2,8 +2,6 @@ package finance_transactions
 
 import (
 	"time"
-
-	"github.com/namviet/backend-core/internal/features/roles"
 )
 
 type CreateFinanceTransactionRequest struct {
@@ -21,9 +19,9 @@ type CreateFinanceTransactionRequest struct {
 	RefID             *string      `json:"ref_id"`
 	Description       *string      `json:"description"`
 	EvidenceURL       *string      `json:"evidence_url"`
-	CashTally         *roles.JSONB `json:"cash_tally"`
+	CashTally         *JSONMap     `json:"cash_tally"`
 	RefAdvanceID      *int64       `json:"ref_advance_id"`
-	TargetBankInfo    *roles.JSONB `json:"target_bank_info"`
+	TargetBankInfo    *JSONMap     `json:"target_bank_info"`
 	BankReferenceID   *string      `json:"bank_reference_id"`
 	BookType          *string      `json:"book_type"`
 	CreatedBy         *string      `json:"created_by"`
@@ -44,9 +42,9 @@ type UpdateFinanceTransactionRequest struct {
 	Description       *string      `json:"description"`
 	EvidenceURL       *string      `json:"evidence_url"`
 	Status            *string      `json:"status"`
-	CashTally         *roles.JSONB `json:"cash_tally"`
+	CashTally         *JSONMap     `json:"cash_tally"`
 	RefAdvanceID      *int64       `json:"ref_advance_id"`
-	TargetBankInfo    *roles.JSONB `json:"target_bank_info"`
+	TargetBankInfo    *JSONMap     `json:"target_bank_info"`
 	BankReferenceID   *string      `json:"bank_reference_id"`
 	BookType          *string      `json:"book_type"`
 	IsPosted          *bool        `json:"is_posted"`

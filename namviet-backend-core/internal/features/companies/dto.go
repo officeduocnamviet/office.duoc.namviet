@@ -1,7 +1,5 @@
 package companies
 
-import "github.com/namviet/backend-core/internal/features/roles"
-
 type CreateCompanyRequest struct {
 	TaxCode                 string       `json:"tax_code" binding:"required"`
 	Name                    string       `json:"name" binding:"required"`
@@ -11,7 +9,7 @@ type CreateCompanyRequest struct {
 	Email                   *string      `json:"email"`
 	LogoURL                 *string      `json:"logo_url"`
 	RepresentativeName      *string      `json:"representative_name"`
-	BusinessImageLicenseURL *roles.JSONB `json:"business_image_license_url"`
+	BusinessLicenseURL *[]string `json:"business_license_url"`
 }
 
 type UpdateCompanyRequest struct {
@@ -23,7 +21,7 @@ type UpdateCompanyRequest struct {
 	Email                   *string      `json:"email"`
 	LogoURL                 *string      `json:"logo_url"`
 	RepresentativeName      *string      `json:"representative_name"`
-	BusinessImageLicenseURL *roles.JSONB `json:"business_image_license_url"`
+	BusinessLicenseURL *[]string `json:"business_license_url"`
 	Status                  *string      `json:"status"`
 }
 

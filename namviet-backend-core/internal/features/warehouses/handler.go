@@ -116,3 +116,29 @@ func UpdateWarehouseHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, warehouse)
 }
+
+// DeleteWarehouseHandler
+// @Summary Delete Warehouse
+// @Description Delete a warehouse
+// @Tags Warehouses
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Warehouse ID"
+// @Success 204 "No Content"
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /warehouses/{id} [delete]
+func DeleteWarehouseHandler(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
+	if err := DeleteWarehouseService(id); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}

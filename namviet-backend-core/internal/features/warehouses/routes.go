@@ -12,5 +12,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 		group.GET("/:id", GetWarehouseHandler)
 		group.POST("", CreateWarehouseHandler)
 		group.PUT("/:id", UpdateWarehouseHandler)
+		group.DELETE("/:id", DeleteWarehouseHandler)
 	}
 }

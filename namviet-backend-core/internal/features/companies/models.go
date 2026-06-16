@@ -3,7 +3,7 @@ package companies
 import (
 	"time"
 
-	"github.com/namviet/backend-core/internal/features/roles"
+	"github.com/lib/pq"
 )
 
 // Company represents the companies table
@@ -17,7 +17,7 @@ type Company struct {
 	Email                   *string     `gorm:"type:varchar(100)" json:"email,omitempty"`
 	LogoURL                 *string     `gorm:"type:text" json:"logo_url,omitempty"`
 	RepresentativeName      *string     `gorm:"type:varchar(100)" json:"representative_name,omitempty"`
-	BusinessImageLicenseURL roles.JSONB `gorm:"type:jsonb" json:"business_image_license_url,omitempty"`
+	BusinessLicenseURL pq.StringArray `gorm:"column:business_license_url;type:text[]" json:"business_license_url,omitempty"`
 	Status                  string      `gorm:"type:varchar(20);default:'active'" json:"status"`
 	CreatedAt               *time.Time  `gorm:"type:timestamp with time zone;default:now()" json:"created_at,omitempty"`
 	UpdatedAt               *time.Time  `gorm:"type:timestamp with time zone;default:now()" json:"updated_at,omitempty"`

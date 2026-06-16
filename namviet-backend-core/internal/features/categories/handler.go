@@ -116,3 +116,29 @@ func UpdateCategoryHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, category)
 }
+
+// DeleteCategoryHandler
+// @Summary Delete Category
+// @Description Delete a category
+// @Tags Categories
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Category ID"
+// @Success 204 "No Content"
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /categories/{id} [delete]
+func DeleteCategoryHandler(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
+	if err := DeleteCategoryService(id); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.Status(http.StatusNoContent)
+}

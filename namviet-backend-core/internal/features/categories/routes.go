@@ -12,5 +12,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 		group.GET("/:id", GetCategoryHandler)
 		group.POST("", CreateCategoryHandler)
 		group.PUT("/:id", UpdateCategoryHandler)
+		group.DELETE("/:id", DeleteCategoryHandler)
 	}
 }

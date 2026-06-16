@@ -1,7 +1,5 @@
 package warehouses
 
-import "time"
-
 func GetAllWarehousesService() ([]Warehouse, error) {
 	return GetAllWarehouses()
 }
@@ -11,22 +9,27 @@ func GetWarehouseByIDService(id int64) (*Warehouse, error) {
 }
 
 func CreateWarehouseService(req CreateWarehouseRequest) (*Warehouse, error) {
-	status := "active"
-	if req.Status != "" {
-		status = req.Status
-	}
-	
-	whType := "main"
+	whType := "retail"
 	if req.Type != "" {
 		whType = req.Type
 	}
 
+	unit := "Hộp"
+	if req.Unit != "" {
+		unit = req.Unit
+	}
+
 	warehouse := &Warehouse{
+		Key:       req.Key,
 		Name:      req.Name,
-		Type:      whType,
+		Unit:      unit,
 		Address:   req.Address,
+		Type:      whType,
+		Latitude:  req.Latitude,
+		Longitude: req.Longitude,
+		Code:      req.Code,
 		Manager:   req.Manager,
-		Status:    status,
+		Phone:     req.Phone,
 	}
 
 	if err := CreateWarehouse(warehouse); err != nil {
@@ -44,6 +47,9 @@ func UpdateWarehouseService(id int64, req UpdateWarehouseRequest) (*Warehouse, e
 	if req.Name != nil {
 		warehouse.Name = *req.Name
 	}
+	if req.Unit != nil {
+		warehouse.Unit = *req.Unit
+	}
 	if req.Type != nil {
 		warehouse.Type = *req.Type
 	}
@@ -53,15 +59,25 @@ func UpdateWarehouseService(id int64, req UpdateWarehouseRequest) (*Warehouse, e
 	if req.Manager != nil {
 		warehouse.Manager = req.Manager
 	}
-	if req.Status != nil {
-		warehouse.Status = *req.Status
+	if req.Code != nil {
+		warehouse.Code = req.Code
 	}
-	
-	now := time.Now()
-	warehouse.UpdatedAt = &now
+	if req.Phone != nil {
+		warehouse.Phone = req.Phone
+	}
+	if req.Latitude != nil {
+		warehouse.Latitude = req.Latitude
+	}
+	if req.Longitude != nil {
+		warehouse.Longitude = req.Longitude
+	}
 
 	if err := UpdateWarehouse(warehouse); err != nil {
 		return nil, err
 	}
 	return warehouse, nil
+}
+
+func DeleteWarehouseService(id int64) error {
+	return DeleteWarehouse(id)
 }

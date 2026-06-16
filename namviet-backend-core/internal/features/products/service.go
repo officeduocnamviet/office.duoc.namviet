@@ -24,8 +24,6 @@ func CreateProductService(req CreateProductRequest) (*Product, error) {
 		WholesaleUnit:    req.WholesaleUnit,
 		RetailUnit:       req.RetailUnit,
 		ConversionFactor: req.ConversionFactor,
-		PriceCost:        req.PriceCost,
-		PriceSell:        req.PriceSell,
 		Status:           "active",
 	}
 
@@ -79,4 +77,8 @@ func UpdateProductService(id int64, req UpdateProductRequest) (*Product, error) 
 		return nil, err
 	}
 	return product, nil
+}
+
+func DeleteProductService(id int64) error {
+	return DeleteProduct(id)
 }

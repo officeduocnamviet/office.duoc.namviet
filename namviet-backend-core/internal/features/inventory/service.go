@@ -10,8 +10,9 @@ func GetInventoryService(warehouseID int64, productID int64) ([]InventoryBatch, 
 }
 
 func CreateTransactionService(req CreateTransactionRequest) (*InventoryTransaction, error) {
-	if req.Type != "IN" && req.Type != "OUT" {
-		return nil, errors.New("invalid transaction type, must be IN or OUT")
+	validTypes := map[string]bool{"inbound": true, "outbound": true, "transfer": true, "adjustment": true, "return": true}
+	if !validTypes[req.Type] {
+		return nil, errors.New("invalid transaction type, must be inbound, outbound, transfer, adjustment, or return")
 	}
 
 	db := supabase.DB
@@ -23,7 +24,7 @@ func CreateTransactionService(req CreateTransactionRequest) (*InventoryTransacti
 	}()
 
 	delta := req.Quantity
-	if req.Type == "OUT" {
+	if req.Type == "outbound" {
 		delta = -req.Quantity
 	}
 
@@ -32,9 +33,12 @@ func CreateTransactionService(req CreateTransactionRequest) (*InventoryTransacti
 		ProductID:     req.ProductID,
 		BatchID:       req.BatchID,
 		Type:          req.Type,
+		ActionGroup:   req.ActionGroup,
 		Quantity:      req.Quantity,
-		ReferenceID:   req.ReferenceID,
-		ReferenceType: req.ReferenceType,
+		UnitPrice:     req.UnitPrice,
+		RefID:         req.RefID,
+		Description:   req.Description,
+		PartnerID:     req.PartnerID,
 	}
 
 	if err := CreateTransactionRecord(tx, transaction); err != nil {

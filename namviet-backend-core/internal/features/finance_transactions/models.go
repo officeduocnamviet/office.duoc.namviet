@@ -1,10 +1,38 @@
 package finance_transactions
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
 	"time"
-
-	"github.com/namviet/backend-core/internal/features/roles"
 )
+
+// JSONMap map for GORM
+type JSONMap map[string]interface{}
+
+func (j JSONMap) Value() (driver.Value, error) {
+	if j == nil {
+		return "{}", nil
+	}
+	b, err := json.Marshal(j)
+	return string(b), err
+}
+
+func (j *JSONMap) Scan(value interface{}) error {
+	if value == nil {
+		*j = nil
+		return nil
+	}
+	bytes, ok := value.([]byte)
+	if !ok {
+		str, ok := value.(string)
+		if !ok {
+			return errors.New("type assertion to []byte or string failed")
+		}
+		bytes = []byte(str)
+	}
+	return json.Unmarshal(bytes, &j)
+}
 
 // FinanceTransaction represents the finance_transactions table
 type FinanceTransaction struct {
@@ -24,9 +52,9 @@ type FinanceTransaction struct {
 	Description       *string     `gorm:"type:text" json:"description,omitempty"`
 	EvidenceURL       *string     `gorm:"type:text" json:"evidence_url,omitempty"`
 	Status            string      `gorm:"type:text;default:'pending'" json:"status"`
-	CashTally         roles.JSONB `gorm:"type:jsonb" json:"cash_tally,omitempty"`
+	CashTally         JSONMap     `gorm:"type:jsonb" json:"cash_tally,omitempty"`
 	RefAdvanceID      *int64      `gorm:"type:bigint" json:"ref_advance_id,omitempty"`
-	TargetBankInfo    roles.JSONB `gorm:"type:jsonb" json:"target_bank_info,omitempty"`
+	TargetBankInfo    JSONMap     `gorm:"type:jsonb" json:"target_bank_info,omitempty"`
 	BankReferenceID   *string     `gorm:"type:text" json:"bank_reference_id,omitempty"`
 	BookType          string      `gorm:"type:text;default:'BOTH'" json:"book_type"`
 	IsPosted          bool        `gorm:"type:boolean;default:false" json:"is_posted"`

@@ -5,7 +5,10 @@ type CreateTransactionRequest struct {
 	ProductID     int64   `json:"product_id" binding:"required"`
 	BatchID       *int64  `json:"batch_id"`
 	Type          string  `json:"type" binding:"required"` // IN, OUT
-	Quantity      int     `json:"quantity" binding:"required"`
-	ReferenceID   *string `json:"reference_id"`
-	ReferenceType *string `json:"reference_type"`
+	ActionGroup *string  `json:"action_group"`
+	Quantity    int      `json:"quantity" binding:"required"`
+	UnitPrice   *float64 `json:"unit_price"`
+	RefID       *string  `json:"ref_id"`
+	Description *string  `json:"description"`
+	PartnerID   *int64   `json:"partner_id"`
 }

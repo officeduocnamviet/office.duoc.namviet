@@ -37,3 +37,8 @@ func UpdateProduct(data *Product) error {
 	db := supabase.DB
 	return db.Save(data).Error
 }
+
+// DeleteProduct soft deletes a product
+func DeleteProduct(id int64) error {
+	return supabase.DB.Model(&Product{}).Where("id = ?", id).Update("deleted_at", "now()").Error
+}

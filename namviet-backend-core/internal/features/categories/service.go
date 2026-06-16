@@ -56,3 +56,7 @@ func UpdateCategoryService(id int64, req UpdateCategoryRequest) (*Category, erro
 	}
 	return category, nil
 }
+
+func DeleteCategoryService(id int64) error {
+	return DeleteCategory(id)
+}

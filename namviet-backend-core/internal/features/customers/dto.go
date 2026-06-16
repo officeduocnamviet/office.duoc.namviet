@@ -1,7 +1,5 @@
 package customers
 
-import "github.com/namviet/backend-core/internal/features/roles"
-
 type CreateCustomerRequest struct {
 	CustomerCode *string     `json:"customer_code"`
 	Name         string      `json:"name" binding:"required"`
@@ -12,7 +10,7 @@ type CreateCustomerRequest struct {
 	DOB          *string     `json:"dob"`
 	Gender       *string     `json:"gender"`
 	CCCD         *string     `json:"cccd"`
-	B2BMetadata  roles.JSONB `json:"b2b_metadata"`
+	B2BMetadata  JSONMap     `json:"b2b_metadata"`
 }
 
 type UpdateCustomerRequest struct {
@@ -26,5 +24,5 @@ type UpdateCustomerRequest struct {
 	DOB          *string     `json:"dob"`
 	Gender       *string     `json:"gender"`
 	CCCD         *string     `json:"cccd"`
-	B2BMetadata  roles.JSONB `json:"b2b_metadata"`
+	B2BMetadata  JSONMap     `json:"b2b_metadata"`
 }

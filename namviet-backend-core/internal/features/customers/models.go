@@ -1,10 +1,38 @@
 package customers
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
 	"time"
-
-	"github.com/namviet/backend-core/internal/features/roles" // For JSONB
 )
+
+// JSONMap map for GORM
+type JSONMap map[string]interface{}
+
+func (j JSONMap) Value() (driver.Value, error) {
+	if j == nil {
+		return "{}", nil
+	}
+	b, err := json.Marshal(j)
+	return string(b), err
+}
+
+func (j *JSONMap) Scan(value interface{}) error {
+	if value == nil {
+		*j = nil
+		return nil
+	}
+	bytes, ok := value.([]byte)
+	if !ok {
+		str, ok := value.(string)
+		if !ok {
+			return errors.New("type assertion to []byte or string failed")
+		}
+		bytes = []byte(str)
+	}
+	return json.Unmarshal(bytes, &j)
+}
 
 // Customer represents the customers table
 type Customer struct {
@@ -20,7 +48,7 @@ type Customer struct {
 	Gender         *string     `gorm:"type:text" json:"gender,omitempty"`
 	CCCD           *string     `gorm:"type:text" json:"cccd,omitempty"`
 	LoyaltyPoints  *int        `gorm:"type:integer;default:0" json:"loyalty_points,omitempty"`
-	B2BMetadata    roles.JSONB `gorm:"type:jsonb;default:'{}'" json:"b2b_metadata,omitempty"`
+	B2BMetadata    JSONMap     `gorm:"type:jsonb;column:b2b_metadata;default:'{}'" json:"b2b_metadata,omitempty"`
 	CurrentDebt    *float64    `gorm:"type:numeric;default:0" json:"current_debt,omitempty"`
 	UpdatedBy      *string     `gorm:"type:uuid" json:"updated_by,omitempty"`
 	CreatedAt      *time.Time  `gorm:"type:timestamp with time zone;default:now()" json:"created_at,omitempty"`
