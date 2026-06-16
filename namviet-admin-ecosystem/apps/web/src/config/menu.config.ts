@@ -141,6 +141,7 @@ export const MENU_DATA = [
           { href: '/system/configs', name: 'Cấu hình chung' },
           { href: '/system/approvals', name: 'Trung tâm Phê duyệt' },
           { href: '/system/integrations', name: 'Đối tác & Webhook' },
+          { href: '/companies', name: 'Quản lý Công ty' },
           { href: '/warehouses', name: 'Quản lý Chi nhánh' },
           { href: '/roles', name: 'Quản lý Phân quyền' },
           { href: '/users', name: 'Quản lý Nhân sự' },

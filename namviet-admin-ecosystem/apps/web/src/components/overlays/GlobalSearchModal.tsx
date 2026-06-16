@@ -1,23 +1,27 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Search, X, Package, Users, FileText, Settings, ArrowRight, LayoutDashboard, Boxes, Store } from 'lucide-react';
+import { Search, X, Package, Users, FileText, Settings, ArrowRight, LayoutDashboard, Boxes, Store, Building2 } from 'lucide-react';
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const MOCK_RESULTS = [
-  { id: 1, title: 'Quản lý kho Tổng', category: 'Tính năng', icon: Boxes, color: 'text-orange-500', bg: 'bg-orange-100' },
-  { id: 2, title: 'Danh sách khách hàng B2B', category: 'Khách hàng', icon: Users, color: 'text-blue-500', bg: 'bg-blue-100' },
-  { id: 3, title: 'Báo cáo doanh thu tháng', category: 'Báo cáo', icon: FileText, color: 'text-emerald-500', bg: 'bg-emerald-100' },
-  { id: 4, title: 'Danh sách Cửa hàng bán lẻ', category: 'Cửa hàng', icon: Store, color: 'text-purple-500', bg: 'bg-purple-100' },
-  { id: 5, title: 'Đơn hàng PO-20231015', category: 'Đơn hàng', icon: Package, color: 'text-amber-500', bg: 'bg-amber-100' },
-  { id: 6, title: 'Cấu hình phân quyền hệ thống', category: 'Hệ thống', icon: Settings, color: 'text-slate-500', bg: 'bg-slate-100' },
+import { useRouter } from 'next/navigation';
+
+const SEARCH_ITEMS = [
+  { id: 'companies', title: 'Quản lý Công ty', category: 'Hệ thống', icon: Building2, color: 'text-indigo-500', bg: 'bg-indigo-100', href: '/companies' },
+  { id: 1, title: 'Quản lý kho Tổng', category: 'Kho hàng', icon: Boxes, color: 'text-orange-500', bg: 'bg-orange-100', href: '/warehouses' },
+  { id: 2, title: 'Danh sách khách hàng B2B', category: 'Khách hàng', icon: Users, color: 'text-blue-500', bg: 'bg-blue-100', href: '/customers' },
+  { id: 3, title: 'Danh sách nhân sự', category: 'Hệ thống', icon: Users, color: 'text-emerald-500', bg: 'bg-emerald-100', href: '/users' },
+  { id: 4, title: 'Danh sách Cửa hàng bán lẻ', category: 'Đơn hàng', icon: Store, color: 'text-purple-500', bg: 'bg-purple-100', href: '/retail/list' },
+  { id: 5, title: 'Tạo đơn hàng B2B', category: 'Đơn hàng', icon: Package, color: 'text-amber-500', bg: 'bg-amber-100', href: '/b2b/create' },
+  { id: 6, title: 'Cấu hình phân quyền hệ thống', category: 'Hệ thống', icon: Settings, color: 'text-slate-500', bg: 'bg-slate-100', href: '/roles' },
 ];
 
 export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModalProps) {
+  const router = useRouter();
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,10 +85,13 @@ export default function GlobalSearchModal({ isOpen, onClose }: GlobalSearchModal
           
           {/* Card Grid Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {MOCK_RESULTS.map((item) => (
+            {SEARCH_ITEMS.filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase())).map((item) => (
               <button 
                 key={item.id}
-                onClick={onClose}
+                onClick={() => {
+                  router.push(item.href);
+                  onClose();
+                }}
                 className="flex items-center p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-primary dark:hover:border-primary-500 hover:shadow-md transition-all group text-left"
               >
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 mr-3 ${item.bg} dark:bg-opacity-20 ${item.color}`}>
