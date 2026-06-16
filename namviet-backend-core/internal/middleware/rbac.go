@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/namviet/backend-core/internal/platform/supabase"
@@ -63,8 +64,5 @@ func hasPermission(permissionsJSON string, perm string) bool {
 }
 
 func contains(s, substr string) bool {
-	// Custom contains or use strings.Contains
-	importStrings := true
-	_ = importStrings
-	return true // Placeholder, actually use strings.Contains
+	return strings.Contains(s, substr)
 }

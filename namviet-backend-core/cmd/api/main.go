@@ -46,6 +46,7 @@ import (
 	"github.com/namviet/backend-core/internal/features/user_notifications"
 	"github.com/namviet/backend-core/internal/platform/firebase"
 	"github.com/namviet/backend-core/internal/platform/supabase"
+	auth_middleware "github.com/namviet/backend-core/internal/middleware"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "github.com/namviet/backend-core/docs" // Uncommented after swag init
@@ -65,9 +66,18 @@ func main() {
 	// 2. Setup Gin Router
 	r := gin.Default()
 
-	// Enable CORS (Basic config)
+	// Enable CORS (Secure config)
 	r.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		origin := c.Request.Header.Get("Origin")
+		allowedOrigins := map[string]bool{
+			"http://localhost:3000":                       true,
+			"https://namviet-omnichannel.web.app":         true,
+			"https://namviet-omnichannel.firebaseapp.com": true,
+		}
+
+		if allowedOrigins[origin] {
+			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
+		}
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		if c.Request.Method == "OPTIONS" {
@@ -81,61 +91,65 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// 4. Setup Routes
-	api := r.Group("/api")
-	users.RegisterRoutes(api)
-	roles.RegisterRoutes(api)
-	categories.RegisterRoutes(api)
-	manufacturers.RegisterRoutes(api)
-	products.RegisterRoutes(api)
-	product_units.RegisterRoutes(api)
-	batches.RegisterRoutes(api)
-	warehouses.RegisterRoutes(api)
-	inventory.RegisterRoutes(api)
-	customers.RegisterRoutes(api)
-	orders.RegisterRoutes(api)
-	promotions.RegisterRoutes(api)
+	publicAPI := r.Group("/api")
+	users.RegisterRoutes(publicAPI)
+
+	protectedAPI := r.Group("/api")
+	protectedAPI.Use(auth_middleware.RequireAuth())
+
+	roles.RegisterRoutes(protectedAPI)
+	categories.RegisterRoutes(protectedAPI)
+	manufacturers.RegisterRoutes(protectedAPI)
+	products.RegisterRoutes(protectedAPI)
+	product_units.RegisterRoutes(protectedAPI)
+	batches.RegisterRoutes(protectedAPI)
+	warehouses.RegisterRoutes(protectedAPI)
+	inventory.RegisterRoutes(protectedAPI)
+	customers.RegisterRoutes(protectedAPI)
+	orders.RegisterRoutes(protectedAPI)
+	promotions.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 4: CLINICAL (Y tế & Lâm sàng) ---
-	appointments.RegisterRoutes(api)
-	clinical_queues.RegisterRoutes(api)
-	medical_visits.RegisterRoutes(api)
+	appointments.RegisterRoutes(protectedAPI)
+	clinical_queues.RegisterRoutes(protectedAPI)
+	medical_visits.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 5: HR & PAYROLL (Nhân sự & Tính lương) ---
-	employees.RegisterRoutes(api)
-	time_attendance.RegisterRoutes(api)
-	payrolls.RegisterRoutes(api)
+	employees.RegisterRoutes(protectedAPI)
+	time_attendance.RegisterRoutes(protectedAPI)
+	payrolls.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 6: FINANCE & ACCOUNTING (Tài chính & Kế toán) ---
-	fund_accounts.RegisterRoutes(api)
-	finance_transactions.RegisterRoutes(api)
-	chart_of_accounts.RegisterRoutes(api)
-	accounting_journals.RegisterRoutes(api)
+	fund_accounts.RegisterRoutes(protectedAPI)
+	finance_transactions.RegisterRoutes(protectedAPI)
+	chart_of_accounts.RegisterRoutes(protectedAPI)
+	accounting_journals.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 7: SYSTEM, APPROVALS & INTEGRATIONS (Hệ thống & Tích hợp) ---
-	companies.RegisterRoutes(api)
-	approvals.RegisterRoutes(api)
-	system_configs.RegisterRoutes(api)
-	audit_logs.RegisterRoutes(api)
-	integrations.RegisterRoutes(api)
-	shipping_partners.RegisterRoutes(api)
+	companies.RegisterRoutes(protectedAPI)
+	approvals.RegisterRoutes(protectedAPI)
+	system_configs.RegisterRoutes(protectedAPI)
+	audit_logs.RegisterRoutes(protectedAPI)
+	integrations.RegisterRoutes(protectedAPI)
+	shipping_partners.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 8: AI & CHATBOT ECOSYSTEM (AI & Chatbot) ---
-	agent_workflows.RegisterRoutes(api)
-	ai_agent_memories.RegisterRoutes(api)
-	chats.RegisterRoutes(api)
-	knowledge_vectors.RegisterRoutes(api)
+	agent_workflows.RegisterRoutes(protectedAPI)
+	ai_agent_memories.RegisterRoutes(protectedAPI)
+	chats.RegisterRoutes(protectedAPI)
+	knowledge_vectors.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 9: ADVANCED HR & OPERATIONS (Nhân sự & Vận hành Nâng cao) ---
-	employment_contracts.RegisterRoutes(api)
-	attendance_logs.RegisterRoutes(api)
-	work_shifts.RegisterRoutes(api)
-	training_courses.RegisterRoutes(api)
+	employment_contracts.RegisterRoutes(protectedAPI)
+	attendance_logs.RegisterRoutes(protectedAPI)
+	work_shifts.RegisterRoutes(protectedAPI)
+	training_courses.RegisterRoutes(protectedAPI)
 
 	// --- MODULE 10: CRM & MARKETING ADVANCED (CRM & Marketing Nâng cao) ---
-	marketing_campaigns.RegisterRoutes(api)
-	customer_records.RegisterRoutes(api)
-	internal_communications.RegisterRoutes(api)
-	user_notifications.RegisterRoutes(api)
+	marketing_campaigns.RegisterRoutes(protectedAPI)
+	customer_records.RegisterRoutes(protectedAPI)
+	internal_communications.RegisterRoutes(protectedAPI)
+	user_notifications.RegisterRoutes(protectedAPI)
 
 	// 5. Start Server
 	log.Println("Server running on port 8080...")
