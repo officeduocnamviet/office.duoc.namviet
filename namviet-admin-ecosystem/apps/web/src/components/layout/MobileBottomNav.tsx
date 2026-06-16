@@ -45,6 +45,7 @@ export default function MobileBottomNav({
 
           <Link
             href="/quick-order"
+            prefetch={false}
             className={`flex flex-col items-center justify-center gap-1 w-16 transition-colors ${activeTab === "home" ? "text-orange-600" : "text-slate-400 hover:text-slate-600"}`}
           >
             <ShoppingBag
@@ -64,6 +65,7 @@ export default function MobileBottomNav({
 
           <Link
             href="/cart"
+            prefetch={false}
             className={`flex flex-col items-center justify-center gap-1 w-16 transition-colors relative ${activeTab === "cart" ? "text-orange-600" : "text-slate-400 hover:text-slate-600"}`}
           >
             <ShoppingCart
