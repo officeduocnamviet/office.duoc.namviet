@@ -15,8 +15,8 @@ type CreateUserRequest struct {
 	Password  string `json:"password" binding:"required,min=6"`
 	FullName  string `json:"full_name" binding:"required"`
 	Phone     string `json:"phone"`
-	RoleID      string `json:"role_id" binding:"required"`
-	CompanyID   string `json:"company_id" binding:"required"`
+	RoleID      string `json:"role_id" binding:"required,uuid"`
+	CompanyID   string `json:"company_id" binding:"required,uuid"`
 	WarehouseID *int64 `json:"warehouse_id"`
 }
 
@@ -24,7 +24,7 @@ type UpdateUserRequest struct {
 	FullName    string `json:"full_name"`
 	Phone       string `json:"phone"`
 	Status      string `json:"status"`
-	RoleID      string `json:"role_id"`
+	RoleID      string `json:"role_id" binding:"omitempty,uuid"`
 	WarehouseID *int64 `json:"warehouse_id"`
 }
 
