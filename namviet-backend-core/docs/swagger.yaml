@@ -729,7 +729,7 @@ definitions:
     properties:
       address:
         type: string
-      business_image_license_url:
+      business_license_url:
         items:
           type: string
         type: array
@@ -786,7 +786,7 @@ definitions:
     properties:
       address:
         type: string
-      business_image_license_url:
+      business_license_url:
         items:
           type: string
         type: array
@@ -835,7 +835,7 @@ definitions:
     properties:
       address:
         type: string
-      business_image_license_url:
+      business_license_url:
         items:
           type: string
         type: array
@@ -955,9 +955,7 @@ definitions:
       address:
         type: string
       b2b_metadata:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/customers.JSONMap'
       cccd:
         type: string
       customer_code:
@@ -983,9 +981,7 @@ definitions:
       address:
         type: string
       b2b_metadata:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/customers.JSONMap'
       cccd:
         type: string
       created_at:
@@ -1019,14 +1015,15 @@ definitions:
       updated_by:
         type: string
     type: object
+  customers.JSONMap:
+    additionalProperties: true
+    type: object
   customers.UpdateCustomerRequest:
     properties:
       address:
         type: string
       b2b_metadata:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/customers.JSONMap'
       cccd:
         type: string
       customer_code:
@@ -1233,9 +1230,7 @@ definitions:
       business_type:
         type: string
       cash_tally:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/finance_transactions.JSONMap'
       category_id:
         type: integer
       code:
@@ -1263,9 +1258,7 @@ definitions:
       ref_type:
         type: string
       target_bank_info:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/finance_transactions.JSONMap'
       transaction_date:
         type: string
     required:
@@ -1285,9 +1278,7 @@ definitions:
       business_type:
         type: string
       cash_tally:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/finance_transactions.JSONMap'
       category_id:
         type: integer
       code:
@@ -1325,13 +1316,14 @@ definitions:
       status:
         type: string
       target_bank_info:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/finance_transactions.JSONMap'
       transaction_date:
         type: string
       updated_at:
         type: string
+    type: object
+  finance_transactions.JSONMap:
+    additionalProperties: true
     type: object
   finance_transactions.UpdateFinanceTransactionRequest:
     properties:
@@ -1344,9 +1336,7 @@ definitions:
       business_type:
         type: string
       cash_tally:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/finance_transactions.JSONMap'
       category_id:
         type: integer
       description:
@@ -1374,9 +1364,7 @@ definitions:
       status:
         type: string
       target_bank_info:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/finance_transactions.JSONMap'
       transaction_date:
         type: string
     type: object
@@ -1391,9 +1379,7 @@ definitions:
       bank_id:
         type: integer
       bank_info:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/fund_accounts.JSONMap'
       currency:
         type: string
       description:
@@ -1421,9 +1407,7 @@ definitions:
       bank_id:
         type: integer
       bank_info:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/fund_accounts.JSONMap'
       created_at:
         type: string
       currency:
@@ -1447,6 +1431,9 @@ definitions:
       updated_at:
         type: string
     type: object
+  fund_accounts.JSONMap:
+    additionalProperties: true
+    type: object
   fund_accounts.UpdateFundAccountRequest:
     properties:
       account_id:
@@ -1458,9 +1445,7 @@ definitions:
       bank_id:
         type: integer
       bank_info:
-        items:
-          type: string
-        type: array
+        $ref: '#/definitions/fund_accounts.JSONMap'
       currency:
         type: string
       description:
@@ -1618,19 +1603,25 @@ definitions:
     type: object
   inventory.CreateTransactionRequest:
     properties:
+      action_group:
+        type: string
       batch_id:
+        type: integer
+      description:
+        type: string
+      partner_id:
         type: integer
       product_id:
         type: integer
       quantity:
         type: integer
-      reference_id:
-        type: string
-      reference_type:
+      ref_id:
         type: string
       type:
         description: IN, OUT
         type: string
+      unit_price:
+        type: number
       warehouse_id:
         type: integer
     required:
@@ -1658,23 +1649,31 @@ definitions:
     type: object
   inventory.InventoryTransaction:
     properties:
+      action_group:
+        type: string
       batch_id:
         type: integer
       created_at:
         type: string
+      created_by:
+        type: string
+      description:
+        type: string
       id:
+        type: string
+      partner_id:
         type: integer
       product_id:
         type: integer
       quantity:
         type: integer
-      reference_id:
-        type: string
-      reference_type:
+      ref_id:
         type: string
       type:
         description: e.g. IN, OUT
         type: string
+      unit_price:
+        type: number
       warehouse_id:
         type: integer
     type: object
@@ -2261,10 +2260,6 @@ definitions:
         type: string
       name:
         type: string
-      price_cost:
-        type: number
-      price_sell:
-        type: number
       retail_unit:
         type: string
       sku:
@@ -2314,12 +2309,6 @@ definitions:
         type: string
       name:
         type: string
-      price:
-        type: number
-      price_cost:
-        type: number
-      price_sell:
-        type: number
       purchasing_policy:
         type: string
       registration_number:
@@ -2333,8 +2322,6 @@ definitions:
       sku:
         type: string
       status:
-        type: string
-      unit_type:
         type: string
       updated_at:
         type: string
@@ -2871,49 +2858,72 @@ definitions:
     properties:
       address:
         type: string
+      code:
+        type: string
+      key:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
       manager:
         type: string
       name:
         type: string
-      status:
+      phone:
         type: string
       type:
         type: string
+      unit:
+        type: string
     required:
+    - key
     - name
     type: object
   warehouses.UpdateWarehouseRequest:
     properties:
       address:
         type: string
+      code:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
       manager:
         type: string
       name:
         type: string
-      status:
+      phone:
         type: string
       type:
+        type: string
+      unit:
         type: string
     type: object
   warehouses.Warehouse:
     properties:
       address:
         type: string
-      created_at:
-        type: string
-      deleted_at:
+      code:
         type: string
       id:
         type: integer
+      key:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
       manager:
         type: string
       name:
         type: string
-      status:
+      phone:
         type: string
       type:
         type: string
-      updated_at:
+      unit:
         type: string
     type: object
   work_shifts.CreateShiftAssignmentRequest:
@@ -4927,6 +4937,38 @@ paths:
       tags:
       - Categories
   /categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete Category
+      tags:
+      - Categories
     get:
       consumes:
       - application/json
@@ -9405,6 +9447,38 @@ paths:
       tags:
       - Products
   /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete Product
+      tags:
+      - Products
     get:
       consumes:
       - application/json
@@ -11954,6 +12028,38 @@ paths:
       tags:
       - Warehouses
   /warehouses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a warehouse
+      parameters:
+      - description: Warehouse ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete Warehouse
+      tags:
+      - Warehouses
     get:
       consumes:
       - application/json

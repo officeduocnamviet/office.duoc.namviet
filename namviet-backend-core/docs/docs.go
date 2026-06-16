@@ -3063,6 +3063,56 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete Category",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/chart-of-accounts": {
@@ -10187,6 +10237,56 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete Product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/products/{id}/batches": {
@@ -14005,6 +14105,56 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a warehouse",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Warehouses"
+                ],
+                "summary": "Delete Warehouse",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Warehouse ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
             }
         },
         "/webhook-logs": {
@@ -15608,7 +15758,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "business_image_license_url": {
+                "business_license_url": {
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -15699,7 +15849,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "business_image_license_url": {
+                "business_license_url": {
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -15766,7 +15916,7 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "business_image_license_url": {
+                "business_license_url": {
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -15950,10 +16100,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "b2b_metadata": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/customers.JSONMap"
                 },
                 "cccd": {
                     "type": "string"
@@ -15989,10 +16136,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "b2b_metadata": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/customers.JSONMap"
                 },
                 "cccd": {
                     "type": "string"
@@ -16044,6 +16188,10 @@ const docTemplate = `{
                 }
             }
         },
+        "customers.JSONMap": {
+            "type": "object",
+            "additionalProperties": true
+        },
         "customers.UpdateCustomerRequest": {
             "type": "object",
             "properties": {
@@ -16051,10 +16199,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "b2b_metadata": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/customers.JSONMap"
                 },
                 "cccd": {
                     "type": "string"
@@ -16373,10 +16518,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "cash_tally": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/finance_transactions.JSONMap"
                 },
                 "category_id": {
                     "type": "integer"
@@ -16418,10 +16560,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "target_bank_info": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/finance_transactions.JSONMap"
                 },
                 "transaction_date": {
                     "type": "string"
@@ -16444,10 +16583,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "cash_tally": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/finance_transactions.JSONMap"
                 },
                 "category_id": {
                     "type": "integer"
@@ -16504,10 +16640,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "target_bank_info": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/finance_transactions.JSONMap"
                 },
                 "transaction_date": {
                     "type": "string"
@@ -16516,6 +16649,10 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "finance_transactions.JSONMap": {
+            "type": "object",
+            "additionalProperties": true
         },
         "finance_transactions.UpdateFinanceTransactionRequest": {
             "type": "object",
@@ -16533,10 +16670,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "cash_tally": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/finance_transactions.JSONMap"
                 },
                 "category_id": {
                     "type": "integer"
@@ -16578,10 +16712,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "target_bank_info": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/finance_transactions.JSONMap"
                 },
                 "transaction_date": {
                     "type": "string"
@@ -16608,10 +16739,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "bank_info": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/fund_accounts.JSONMap"
                 },
                 "currency": {
                     "type": "string"
@@ -16649,10 +16777,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "bank_info": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/fund_accounts.JSONMap"
                 },
                 "created_at": {
                     "type": "string"
@@ -16689,6 +16814,10 @@ const docTemplate = `{
                 }
             }
         },
+        "fund_accounts.JSONMap": {
+            "type": "object",
+            "additionalProperties": true
+        },
         "fund_accounts.UpdateFundAccountRequest": {
             "type": "object",
             "properties": {
@@ -16705,10 +16834,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "bank_info": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/fund_accounts.JSONMap"
                 },
                 "currency": {
                     "type": "string"
@@ -16956,7 +17082,16 @@ const docTemplate = `{
                 "warehouse_id"
             ],
             "properties": {
+                "action_group": {
+                    "type": "string"
+                },
                 "batch_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "partner_id": {
                     "type": "integer"
                 },
                 "product_id": {
@@ -16965,15 +17100,15 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
-                "reference_id": {
-                    "type": "string"
-                },
-                "reference_type": {
+                "ref_id": {
                     "type": "string"
                 },
                 "type": {
                     "description": "IN, OUT",
                     "type": "string"
+                },
+                "unit_price": {
+                    "type": "number"
                 },
                 "warehouse_id": {
                     "type": "integer"
@@ -17009,13 +17144,25 @@ const docTemplate = `{
         "inventory.InventoryTransaction": {
             "type": "object",
             "properties": {
+                "action_group": {
+                    "type": "string"
+                },
                 "batch_id": {
                     "type": "integer"
                 },
                 "created_at": {
                     "type": "string"
                 },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
                 "id": {
+                    "type": "string"
+                },
+                "partner_id": {
                     "type": "integer"
                 },
                 "product_id": {
@@ -17024,15 +17171,15 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
-                "reference_id": {
-                    "type": "string"
-                },
-                "reference_type": {
+                "ref_id": {
                     "type": "string"
                 },
                 "type": {
                     "description": "e.g. IN, OUT",
                     "type": "string"
+                },
+                "unit_price": {
+                    "type": "number"
                 },
                 "warehouse_id": {
                     "type": "integer"
@@ -17922,12 +18069,6 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "price_cost": {
-                    "type": "number"
-                },
-                "price_sell": {
-                    "type": "number"
-                },
                 "retail_unit": {
                     "type": "string"
                 },
@@ -17999,15 +18140,6 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "price": {
-                    "type": "number"
-                },
-                "price_cost": {
-                    "type": "number"
-                },
-                "price_sell": {
-                    "type": "number"
-                },
                 "purchasing_policy": {
                     "type": "string"
                 },
@@ -18027,9 +18159,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "type": "string"
-                },
-                "unit_type": {
                     "type": "string"
                 },
                 "updated_at": {
@@ -18837,11 +18966,24 @@ const docTemplate = `{
         "warehouses.CreateWarehouseRequest": {
             "type": "object",
             "required": [
+                "key",
                 "name"
             ],
             "properties": {
                 "address": {
                     "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
                 },
                 "manager": {
                     "type": "string"
@@ -18849,10 +18991,13 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "status": {
+                "phone": {
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                },
+                "unit": {
                     "type": "string"
                 }
             }
@@ -18863,16 +19008,28 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
+                "code": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                },
                 "manager": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "status": {
+                "phone": {
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                },
+                "unit": {
                     "type": "string"
                 }
             }
@@ -18883,14 +19040,20 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
+                "code": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
                 },
                 "manager": {
                     "type": "string"
@@ -18898,13 +19061,13 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "status": {
+                "phone": {
                     "type": "string"
                 },
                 "type": {
                     "type": "string"
                 },
-                "updated_at": {
+                "unit": {
                     "type": "string"
                 }
             }
