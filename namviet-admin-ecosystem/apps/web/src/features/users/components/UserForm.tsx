@@ -7,6 +7,7 @@ import { UsersUser } from '@namviet/shared-types/src/backend.d';
 import { useCreateUser, useUpdateUser } from '../hooks';
 import { useRoles } from '@/features/roles/hooks';
 import { useWarehouses } from '@/features/warehouses/hooks';
+import { useCompanies } from '@/hooks/queries/use-companies';
 import { toast } from 'sonner';
 
 const schema = z.object({
@@ -15,6 +16,7 @@ const schema = z.object({
   phone: z.string().optional(),
   password: z.string().min(6, 'Mật khẩu phải từ 6 ký tự').optional(),
   role_id: z.string().min(1, 'Vui lòng chọn vai trò'),
+  company_id: z.string().min(1, 'Vui lòng chọn công ty'),
   warehouse_id: z.number().optional().nullable(),
   status: z.enum(['active', 'inactive', 'working']).optional(),
 });
@@ -35,6 +37,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSuccess, onCa
   // Fetch dropdown data
   const { data: roles = [], isLoading: loadingRoles } = useRoles();
   const { data: warehouses = [], isLoading: loadingWarehouses } = useWarehouses();
+  const { data: companies = [], isLoading: loadingCompanies } = useCompanies();
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -44,6 +47,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSuccess, onCa
       phone: initialData?.phone || '',
       password: '', // Không hiện password cũ
       role_id: initialData?.role_id || '',
+      company_id: (initialData as any)?.company_id || '',
       warehouse_id: initialData?.warehouse_id || null,
       status: (initialData?.status as any) || 'active',
     }
@@ -71,7 +75,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSuccess, onCa
         return;
       }
       createMutation.mutate(
-        { ...data, password: data.password, company_id: '1' } as any,
+        { ...data, password: data.password } as any,
         {
           onSuccess: () => {
             toast.success('Thêm nhân sự thành công');
@@ -165,6 +169,26 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSuccess, onCa
                   placeholder="Chọn vai trò"
                   loading={loadingRoles}
                   options={roles.map(r => ({ value: r.id, label: r.name }))}
+                />
+              </Form.Item>
+            )}
+          />
+
+          <Controller
+            name="company_id"
+            control={control}
+            render={({ field }) => (
+              <Form.Item 
+                label="Công ty"
+                validateStatus={errors.company_id ? 'error' : ''}
+                help={errors.company_id?.message}
+                required
+              >
+                <Select 
+                  {...field} 
+                  placeholder="Chọn công ty"
+                  loading={loadingCompanies}
+                  options={companies.map((c: any) => ({ value: c.id, label: c.name }))}
                 />
               </Form.Item>
             )}

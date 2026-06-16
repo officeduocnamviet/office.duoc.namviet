@@ -7,7 +7,7 @@ export interface User {
   phone?: string;
   status: string;
   role_id?: string;
-  company_id?: number;
+  company_id?: string;
   warehouse_id?: number;
   role_name?: string;
   company_name?: string;
@@ -24,7 +24,7 @@ export const userService = {
     full_name: string;
     phone?: string;
     role_id: string;
-    company_id: number;
+    company_id: string;
     warehouse_id: number;
   }): Promise<User> => {
     return apiClient.post('/users', data);
