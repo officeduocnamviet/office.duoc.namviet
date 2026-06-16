@@ -18,6 +18,14 @@ export const Header = () => {
     }
   };
 
+  const notificationMenu = {
+    items: [
+      { key: '1', label: <div className="text-sm">Tính năng Đặt hàng B2B đã được cập nhật</div> },
+      { key: '2', label: <div className="text-sm">Có 1 đơn xin nghỉ phép chờ duyệt</div> },
+      { key: '3', label: <div className="text-sm text-gray-400">Xem tất cả thông báo</div> }
+    ]
+  };
+
   const userMenu = {
     items: [
       { key: 'profile', icon: <UserOutlined />, label: 'Hồ sơ cá nhân' },
@@ -53,17 +61,27 @@ export const Header = () => {
         </div>
 
         {/* Mobile Search Icon */}
-        <Search size={20} className="text-gray-600 md:hidden cursor-pointer" />
+        <Search 
+          size={20} 
+          className="text-gray-600 md:hidden cursor-pointer" 
+          onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, altKey: true }))}
+        />
 
         {/* Chat */}
         <Badge count={2} size="small" offset={[-2, 2]}>
-          <MessageCircle size={20} className="text-gray-600 cursor-pointer hover:text-orange-500 transition-colors" />
+          <MessageCircle 
+            size={20} 
+            className="text-gray-600 cursor-pointer hover:text-orange-500 transition-colors" 
+            onClick={() => router.push('/communications/chat')}
+          />
         </Badge>
 
         {/* Notifications */}
-        <Badge count={5} size="small" offset={[-2, 2]}>
-          <Bell size={20} className="text-gray-600 cursor-pointer hover:text-orange-500 transition-colors" />
-        </Badge>
+        <Dropdown menu={notificationMenu} placement="bottomRight" arrow trigger={['click']}>
+          <Badge count={5} size="small" offset={[-2, 2]}>
+            <Bell size={20} className="text-gray-600 cursor-pointer hover:text-orange-500 transition-colors" />
+          </Badge>
+        </Dropdown>
 
         {/* Divider */}
         <div className="w-px h-6 bg-gray-200 hidden md:block"></div>

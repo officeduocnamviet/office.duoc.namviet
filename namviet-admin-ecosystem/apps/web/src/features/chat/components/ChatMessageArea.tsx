@@ -6,6 +6,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Spin, Input, Button } from 'antd';
 import { Send } from 'lucide-react';
 import dayjs from 'dayjs';
+import { toast } from 'sonner';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 interface Props {
   channelId: number;
@@ -15,6 +17,8 @@ export const ChatMessageArea: React.FC<Props> = ({ channelId }) => {
   const queryClient = useQueryClient();
   const { data: messages = [], isLoading } = useMessages(channelId);
   const sendMutation = useSendMessage();
+  const { user } = useAuthStore();
+  const currentUserId = user?.id || 'CURRENT_USER';
   
   const [content, setContent] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -23,17 +27,26 @@ export const ChatMessageArea: React.FC<Props> = ({ channelId }) => {
   useEffect(() => {
     if (!channelId) return;
 
-    const channel = supabase.channel(`internal_messages_${channelId}`)
+    const channel = supabase.channel(`chat_messages_${channelId}`)
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
-        table: 'internal_messages',
+        table: 'chat_messages',
         filter: `channel_id=eq.${channelId}`
       }, (payload) => {
+        const newMessage = payload.new as InternalMessage;
+        
+        // Push notification if not from me
+        if (newMessage.sender_id !== currentUserId) {
+          toast.info(`Tin nhắn mới: ${newMessage.content}`, {
+            description: 'Từ cuộc trò chuyện nội bộ',
+          });
+        }
+
         // Append new message to cache
         queryClient.setQueryData(['chat_messages', channelId], (oldData: InternalMessage[] | undefined) => {
-          if (!oldData) return [payload.new as InternalMessage];
-          return [...oldData, payload.new as InternalMessage];
+          if (!oldData) return [newMessage];
+          return [...oldData, newMessage];
         });
       })
       .subscribe();
@@ -54,7 +67,7 @@ export const ChatMessageArea: React.FC<Props> = ({ channelId }) => {
     sendMutation.mutate({
       channel_id: channelId,
       content,
-      sender_id: 'CURRENT_USER' // mock user
+      sender_id: currentUserId
     }, {
       onSuccess: () => {
         setContent('');
@@ -68,7 +81,7 @@ export const ChatMessageArea: React.FC<Props> = ({ channelId }) => {
     <div className="flex-1 flex flex-col bg-white h-full relative">
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.map((msg, idx) => {
-          const isMe = msg.sender_id === 'CURRENT_USER';
+          const isMe = msg.sender_id === currentUserId;
           return (
             <div key={msg.id || idx} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
               <div className="flex items-end gap-2 max-w-[70%]">
