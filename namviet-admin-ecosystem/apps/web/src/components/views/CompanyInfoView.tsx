@@ -38,7 +38,7 @@ interface Company {
   status: string;
 }
 
-const API_URL = "http://localhost:8080/api/v1/companies";
+import { apiClient } from "@/lib/axios";
 
 export default function CompanyInfoView() {
   const [viewMode, setViewMode] = useState<"list" | "form">("list");
@@ -49,10 +49,9 @@ export default function CompanyInfoView() {
   const fetchCompanies = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(API_URL);
-      if (res.ok) {
-        const data = await res.json();
-        setCompanies(data || []);
+      const res = await apiClient.get('/v1/companies');
+      if (res.data) {
+        setCompanies(res.data || []);
       }
     } catch (error) {
       console.error("Lỗi khi tải danh sách công ty:", error);
@@ -80,8 +79,8 @@ export default function CompanyInfoView() {
   const handleDelete = async (id: string) => {
     if (!confirm("Bạn có chắc chắn muốn xóa công ty này?")) return;
     try {
-      const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      if (res.ok) {
+      const res = await apiClient.delete(`/v1/companies/${id}`);
+      if (res.status >= 200 && res.status < 300) {
         fetchCompanies();
       } else {
         alert("Lỗi khi xóa");
@@ -298,10 +297,9 @@ function CompanyForm({
   useEffect(() => {
     if (isEditing) {
       // Fetch details
-      fetch(`${API_URL}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const comp = data.find((c: Company) => c.id === id);
+      apiClient.get('/v1/companies')
+        .then((res) => {
+          const comp = res.data?.find((c: Company) => c.id === id);
           if (comp) setFormData(comp);
         });
     }
@@ -362,16 +360,13 @@ function CompanyForm({
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const url = isEditing ? `${API_URL}/${id}` : API_URL;
-      const method = isEditing ? "PUT" : "POST";
+      const url = isEditing ? `/v1/companies/${id}` : '/v1/companies';
+      
+      const res = isEditing 
+        ? await apiClient.put(url, formData)
+        : await apiClient.post(url, formData);
 
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
+      if (res.status >= 200 && res.status < 300) {
         alert("Lưu thành công!");
         // Không tự động onBack() để user tiếp tục sửa hoặc quay lại thủ công
       } else {
