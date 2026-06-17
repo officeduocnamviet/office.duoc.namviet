@@ -51,8 +51,7 @@ export const Header = () => {
         <div 
           className="hidden md:flex items-center gap-2 bg-gray-100 hover:bg-gray-200 cursor-pointer px-3 py-1.5 rounded-full transition-colors"
           onClick={() => {
-            // Phát sự kiện bàn phím ảo để mở Modal (hoặc truyền prop, nhưng dispatch event cho nhanh)
-            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, altKey: true }));
+            window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', code: 'KeyK', ctrlKey: true, altKey: true, bubbles: true }));
           }}
         >
           <Search size={16} className="text-gray-500" />
@@ -63,8 +62,7 @@ export const Header = () => {
         {/* Mobile Search Icon */}
         <Search 
           size={20} 
-          className="text-gray-600 md:hidden cursor-pointer" 
-          onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, altKey: true }))}
+          onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', code: 'KeyK', ctrlKey: true, altKey: true, bubbles: true }))}
         />
 
         {/* Chat */}
