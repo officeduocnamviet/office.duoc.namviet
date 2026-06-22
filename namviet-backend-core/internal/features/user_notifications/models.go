@@ -6,8 +6,9 @@ import (
 
 // UserFCMToken represents the user_fcm_tokens table
 type UserFCMToken struct {
-	ID         int64      `gorm:"primaryKey;autoIncrement" json:"id"`
-	UserID     string     `gorm:"type:uuid;not null" json:"user_id"`
+	ID         string     `gorm:"type:uuid;primaryKey;default:gen_random_uuid()" json:"id"`
+	TargetID   string     `gorm:"type:text;not null" json:"target_id"`
+	TargetType string     `gorm:"type:text;not null;default:'employee'" json:"target_type"`
 	FCMToken   string     `gorm:"type:text;not null" json:"fcm_token"`
 	DeviceID   *string    `gorm:"type:text" json:"device_id,omitempty"`
 	DeviceType *string    `gorm:"type:text" json:"device_type,omitempty"`

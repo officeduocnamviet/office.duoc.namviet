@@ -41,12 +41,29 @@ export function optimize_cloudinary_url(url: string | null | undefined): string 
  * @param backendUploadUrl URL của API Upload (Mặc định: http://localhost:8080/api/v1/upload)
  * @returns {Promise<string>} Đường dẫn secure_url trả về từ Cloudinary
  */
-export async function uploadToCloudinary(file: File, backendUploadUrl: string = 'http://localhost:8080/api/v1/upload'): Promise<string> {
+export async function uploadToCloudinary(file: File, backendUploadUrl?: string): Promise<string> {
+  const url = backendUploadUrl || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'}/upload`;
   const formData = new FormData();
   formData.append('image', file);
 
-  const response = await fetch(backendUploadUrl, {
+  let token = '';
+  if (typeof window !== 'undefined') {
+    try {
+      const authStorageStr = localStorage.getItem('namviet-erp-auth-storage');
+      if (authStorageStr) {
+        const authData = JSON.parse(authStorageStr);
+        token = authData?.state?.token || '';
+      }
+    } catch (e) {
+      console.error('Lỗi khi lấy token từ localStorage:', e);
+    }
+  }
+
+  const response = await fetch(url, {
     method: 'POST',
+    headers: {
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    },
     body: formData,
   });
 

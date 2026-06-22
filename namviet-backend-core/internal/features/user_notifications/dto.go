@@ -2,7 +2,8 @@ package user_notifications
 
 // FCM Token DTOs
 type CreateFCMTokenRequest struct {
-	UserID     string  `json:"user_id" binding:"required"`
+	TargetID   string  `json:"target_id" binding:"required"`
+	TargetType string  `json:"target_type" binding:"required"` // employee, retail_customer, wholesale_customer
 	FCMToken   string  `json:"fcm_token" binding:"required"`
 	DeviceID   *string `json:"device_id"`
 	DeviceType *string `json:"device_type"`

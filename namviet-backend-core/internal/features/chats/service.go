@@ -1,6 +1,11 @@
 package chats
 
-import "time"
+import (
+	"time"
+
+	"github.com/namviet/backend-core/internal/features/user_notifications"
+	"github.com/namviet/backend-core/internal/platform/firebase"
+)
 
 // Chat Sessions
 func GetAllChatSessionsService() ([]ChatSession, error) {
@@ -71,5 +76,53 @@ func CreateChatMessageService(req CreateChatMessageRequest) (*ChatMessage, error
 	if err := CreateChatMessage(message); err != nil {
 		return nil, err
 	}
+
+	if req.SessionID != nil {
+		session, err := GetChatSessionByID(*req.SessionID)
+		if err == nil && session != nil {
+			go sendPushNotificationForChat(message, session)
+		}
+	}
+
 	return message, nil
+}
+
+func sendPushNotificationForChat(message *ChatMessage, session *ChatSession) {
+	var targetID string
+	var targetType string
+
+	if message.SenderType == "customer" {
+		if session.AgentID == nil {
+			return
+		}
+		targetID = *session.AgentID
+		targetType = "employee"
+	} else if message.SenderType == "agent" || message.SenderType == "employee" {
+		if session.CustomerID == nil {
+			return
+		}
+		targetID = *session.CustomerID
+		targetType = "retail_customer" // Can be enhanced later to check if wholesale
+	} else {
+		return // Do not send for system/bot messages
+	}
+
+	tokens, err := user_notifications.GetFCMTokensByTargetService(targetID, targetType)
+	if err != nil || len(tokens) == 0 {
+		return
+	}
+
+	var tokenStrings []string
+	for _, t := range tokens {
+		if t.FCMToken != "" {
+			tokenStrings = append(tokenStrings, t.FCMToken)
+		}
+	}
+
+	if len(tokenStrings) > 0 {
+		firebase.SendMulticastNotification(tokenStrings, "Tin nhắn mới", message.Content, map[string]string{
+			"session_id": *message.SessionID,
+			"type":       "chat_message",
+		})
+	}
 }

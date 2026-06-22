@@ -36,19 +36,14 @@ func GetAllFCMTokensHandler(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param id path integer true "Token ID"
+// @Param id path string true "Token ID"
 // @Success 200 {object} UserFCMToken
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Router /fcm-tokens/{id} [get]
 func GetFCMTokenHandler(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.ParseInt(idStr, 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-		return
-	}
+	id := c.Param("id")
 	item, err := GetFCMTokenByIDService(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -92,7 +87,7 @@ func CreateFCMTokenHandler(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param id path integer true "Token ID"
+// @Param id path string true "Token ID"
 // @Param request body UpdateFCMTokenRequest true "Update Details"
 // @Success 200 {object} UserFCMToken
 // @Failure 400 {object} map[string]string
@@ -101,12 +96,7 @@ func CreateFCMTokenHandler(c *gin.Context) {
 // @Failure 500 {object} map[string]string
 // @Router /fcm-tokens/{id} [put]
 func UpdateFCMTokenHandler(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.ParseInt(idStr, 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-		return
-	}
+	id := c.Param("id")
 	var req UpdateFCMTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -128,19 +118,14 @@ func UpdateFCMTokenHandler(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param id path integer true "Token ID"
+// @Param id path string true "Token ID"
 // @Success 204
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /fcm-tokens/{id} [delete]
 func DeleteFCMTokenHandler(c *gin.Context) {
-	idStr := c.Param("id")
-	id, err := strconv.ParseInt(idStr, 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-		return
-	}
+	id := c.Param("id")
 	
 	if err := DeleteFCMTokenService(id); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

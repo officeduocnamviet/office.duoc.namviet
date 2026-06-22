@@ -736,3 +736,34 @@
 - **end_time**: time without time zone (Nullable: NO) <== Giờ kết thúc (VD: 17:00)>
 - **is_active**: boolean (Nullable: YES) DEFAULT true <== Trạng thái áp dụng>
 - **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now() <== Thời gian tạo>
+
+### Table: campaign_touchpoints <== Danh sách các điểm chạm (Touchpoints) trong một chiến dịch Marketing Automation>
+- **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid() <== Khóa chính>
+- **campaign_id**: uuid (Nullable: NO) <== Thuộc chiến dịch nào>
+- **step_order**: integer (Nullable: NO) <== Thứ tự hiển thị trên giao diện (Bước 1, Bước 2...)>
+- **channel**: text (Nullable: NO) <== Kênh gửi (zalo_zns, sms, push_app, facebook_post)>
+- **content_template**: text (Nullable: NO) <== Nội dung tin nhắn và các biến {TenKhachHang}>
+- **attached_voucher_id**: uuid (Nullable: YES) <== Mã voucher đính kèm nếu có>
+- **trigger_type**: text (Nullable: NO) <== Loại kích hoạt (absolute, relative, behavioral)>
+- **trigger_config**: jsonb (Nullable: NO) <== Xử lý 3 trục thời gian (VD: execute_at, delay_days, event_name, conditions)>
+- **status**: text (Nullable: NO) DEFAULT 'active'::text <== Trạng thái kích hoạt>
+- **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now() <== Thời gian tạo>
+- **updated_at**: timestamp with time zone (Nullable: YES) DEFAULT now() <== Thời gian cập nhật>
+
+### Table: customer_campaign_journeys <== Theo dõi Hành trình của từng Khách hàng trong chuỗi Marketing>
+- **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid() <== Khóa chính>
+- **customer_id**: bigint (Nullable: NO) <== ID Khách hàng>
+- **campaign_id**: uuid (Nullable: NO) <== Thuộc chiến dịch nào>
+- **current_touchpoint_id**: uuid (Nullable: NO) <== Đang chờ nhận tin nhắn ở điểm chạm nào>
+- **status**: text (Nullable: NO) DEFAULT 'in_progress'::text <== Trạng thái (in_progress, completed, dropped)>
+- **next_execution_time**: timestamp with time zone (Nullable: NO) <== Thời gian dự kiến hệ thống sẽ gửi tin nhắn ở điểm chạm tiếp theo>
+- **started_at**: timestamp with time zone (Nullable: YES) DEFAULT now() <== Thời gian bắt đầu vào phễu>
+- **last_interaction_at**: timestamp with time zone (Nullable: YES) <== Lần tương tác cuối>
+
+### Table: campaign_metrics <== Phễu chuyển đổi & Báo cáo Real-time cho Marketing>
+- **id**: uuid (Nullable: NO) DEFAULT gen_random_uuid() <== Khóa chính>
+- **touchpoint_id**: uuid (Nullable: NO) <== Thuộc điểm chạm nào>
+- **customer_id**: bigint (Nullable: NO) <== ID Khách hàng tương tác>
+- **interaction_type**: text (Nullable: NO) <== Loại tương tác (sent, delivered, opened, clicked, converted)>
+- **revenue_generated**: numeric (Nullable: YES) DEFAULT 0 <== Doanh thu tạo ra nếu khách hàng chuyển đổi>
+- **created_at**: timestamp with time zone (Nullable: YES) DEFAULT now() <== Thời điểm tương tác>

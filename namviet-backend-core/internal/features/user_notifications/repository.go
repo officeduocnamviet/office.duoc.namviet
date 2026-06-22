@@ -15,7 +15,7 @@ func GetAllFCMTokens() ([]UserFCMToken, error) {
 	return results, err
 }
 
-func GetFCMTokenByID(id int64) (*UserFCMToken, error) {
+func GetFCMTokenByID(id string) (*UserFCMToken, error) {
 	var result UserFCMToken
 	db := supabase.DB
 	err := db.First(&result, "id = ?", id).Error
@@ -28,6 +28,13 @@ func GetFCMTokenByID(id int64) (*UserFCMToken, error) {
 	return &result, nil
 }
 
+func GetFCMTokensByTarget(targetID string, targetType string) ([]UserFCMToken, error) {
+	var results []UserFCMToken
+	db := supabase.DB
+	err := db.Where("target_id = ? AND target_type = ?", targetID, targetType).Find(&results).Error
+	return results, err
+}
+
 func CreateFCMToken(data *UserFCMToken) error {
 	db := supabase.DB
 	return db.Create(data).Error
@@ -38,7 +45,7 @@ func UpdateFCMToken(data *UserFCMToken) error {
 	return db.Save(data).Error
 }
 
-func DeleteFCMToken(id int64) error {
+func DeleteFCMToken(id string) error {
 	db := supabase.DB
 	return db.Where("id = ?", id).Delete(&UserFCMToken{}).Error
 }

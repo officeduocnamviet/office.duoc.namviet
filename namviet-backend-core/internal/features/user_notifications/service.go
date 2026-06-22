@@ -7,13 +7,18 @@ func GetAllFCMTokensService() ([]UserFCMToken, error) {
 	return GetAllFCMTokens()
 }
 
-func GetFCMTokenByIDService(id int64) (*UserFCMToken, error) {
+func GetFCMTokenByIDService(id string) (*UserFCMToken, error) {
 	return GetFCMTokenByID(id)
+}
+
+func GetFCMTokensByTargetService(targetID string, targetType string) ([]UserFCMToken, error) {
+	return GetFCMTokensByTarget(targetID, targetType)
 }
 
 func CreateFCMTokenService(req CreateFCMTokenRequest) (*UserFCMToken, error) {
 	token := &UserFCMToken{
-		UserID:     req.UserID,
+		TargetID:   req.TargetID,
+		TargetType: req.TargetType,
 		FCMToken:   req.FCMToken,
 		DeviceID:   req.DeviceID,
 		DeviceType: req.DeviceType,
@@ -25,7 +30,7 @@ func CreateFCMTokenService(req CreateFCMTokenRequest) (*UserFCMToken, error) {
 	return token, nil
 }
 
-func UpdateFCMTokenService(id int64, req UpdateFCMTokenRequest) (*UserFCMToken, error) {
+func UpdateFCMTokenService(id string, req UpdateFCMTokenRequest) (*UserFCMToken, error) {
 	token, err := GetFCMTokenByID(id)
 	if err != nil {
 		return nil, err
@@ -50,7 +55,7 @@ func UpdateFCMTokenService(id int64, req UpdateFCMTokenRequest) (*UserFCMToken, 
 	return token, nil
 }
 
-func DeleteFCMTokenService(id int64) error {
+func DeleteFCMTokenService(id string) error {
 	return DeleteFCMToken(id)
 }
 
