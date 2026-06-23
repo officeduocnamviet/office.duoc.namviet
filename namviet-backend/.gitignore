@@ -1,0 +1,5 @@
+/_prod-snapshot/
+*.env
+.env*
+bin/
+/tmp/

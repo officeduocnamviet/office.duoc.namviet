@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+
+      - name: Verify decimal lib (chặn typosquat)
+        run: |
+          grep -q 'github.com/shopspring/decimal' go.mod
+          ! grep -q 'shopsprint' go.mod
+
+      # sqlc diff: bảo đảm code Go đã commit khớp với những gì sqlc sinh từ
+      # schema/queries hiện tại. Không cần DB (so sánh tĩnh) → deterministic,
+      # không đỏ vô lý. (Dùng diff thay cho vet vì vet cần DB/managed engine.)
+      - name: sqlc diff (generated khớp)
+        run: |
+          go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.30.0
+          sqlc diff
+
+      - name: Build
+        run: go build ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test (race)
+        run: go test ./... -race -count=1
+
+      - name: govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v6
