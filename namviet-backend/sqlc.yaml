@@ -1,0 +1,30 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    # schema gồm 2 nguồn (ADR 0001 strangler-fig):
+    #   - db/migrations: object MỚI backend sở hữu (schema app, qua goose).
+    #   - db/schema: schema THAM CHIẾU public.* (bảng kế thừa Supabase) — chỉ để
+    #     sqlc type-check, KHÔNG chạy lên prod.
+    schema:
+      - "db/migrations"
+      - "db/schema"
+    queries: "db/queries"
+    gen:
+      go:
+        package: "appdb"
+        out: "internal/platform/db/appdb"
+        sql_package: "pgx/v5"
+        emit_pointers_for_null_types: true
+        overrides:
+          # uuid → string: ID nghiệp vụ là chuỗi ở domain (map ở repo). Tránh để
+          # kiểu uuid của pgx lọt qua adapter ra ngoài.
+          - db_type: "uuid"
+            go_type: "string"
+          - db_type: "uuid"
+            nullable: true
+            go_type:
+              type: "string"
+              pointer: true
+          # citext (email) → string.
+          - db_type: "citext"
+            go_type: "string"

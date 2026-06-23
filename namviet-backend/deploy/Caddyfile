@@ -1,0 +1,10 @@
+{$PUBLIC_HOST:localhost} {
+	# Route đã port sang backend Go.
+	handle /v1/* {
+		reverse_proxy api:8080
+	}
+	# Phần còn lại vẫn về Supabase trong giai đoạn strangler-fig.
+	handle {
+		reverse_proxy {$SUPABASE_UPSTREAM}
+	}
+}

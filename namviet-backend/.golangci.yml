@@ -1,0 +1,18 @@
+run:
+  timeout: 5m
+
+linters:
+  enable:
+    - forbidigo
+    - govet
+    - staticcheck
+    - errcheck
+
+linters-settings:
+  forbidigo:
+    # Áp regex theo package path: cấm float32/float64 lọt vào các package tiền.
+    # Mở rộng danh sách context khi thêm domain ở plan sau.
+    forbid:
+      - p: 'float(32|64)'
+        pkg: 'github.com/Maneva-AI/namviet-backend/internal/(accounting|finance|vat|orders|inventory|customers|purchasing)(/.*)?'
+        msg: "Cấm float ở money path — dùng shopspring/decimal + NUMERIC"

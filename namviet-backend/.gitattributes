@@ -1,0 +1,18 @@
+# Chuẩn hoá line-ending: lưu LF trong repo, tránh CRLF churn cross-platform
+* text=auto eol=lf
+
+*.go    text eol=lf
+*.sql   text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.mod   text eol=lf
+*.sum   text eol=lf
+Makefile text eol=lf
+Dockerfile text eol=lf
+*.sh    text eol=lf
+
+# Không động vào file nhị phân
+*.png   binary
+*.jpg   binary
+*.ico   binary
